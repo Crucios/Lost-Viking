@@ -8,12 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LifeIsAGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
+	Texture img,img1;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		img1= new Texture("Babies.png");
 	}
 
 	@Override
@@ -22,6 +23,7 @@ public class LifeIsAGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
+		batch.draw(img1,10,10);
 		batch.end();
 	}
 	
