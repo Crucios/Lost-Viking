@@ -1,0 +1,19 @@
+
+Player.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Player
+  rotate: false
+  xy: 1, 323
+  size: 880, 150
+  orig: 880, 150
+  offset: 0, 0
+  index: -1
+Explosion
+  rotate: false
+  xy: 1, 1
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1

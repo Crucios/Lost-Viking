@@ -22,10 +22,6 @@ public class WorldCreator {
 		for(MapObject object : map.getLayers().get("wall-object").getObjects().getByType(RectangleMapObject.class)) {
 			new Wall(world, map ,object);
 		}
-		
-		//Set for ground-object
-		for(MapObject object : map.getLayers().get("ground-object").getObjects().getByType(RectangleMapObject.class)) {			
-			new Ground(world, map, object);
-		}
+
 	}
 }

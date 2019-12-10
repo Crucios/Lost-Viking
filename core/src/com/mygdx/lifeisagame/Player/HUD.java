@@ -15,31 +15,9 @@ public class HUD implements Disposable{
 	public Stage stage;
 	
 	//Scoring
-	private Integer friendship;
-	private Integer family;
-	private Integer health;
-	private Integer happiness;
-	private Integer money;
+	private Integer hitpoint;
 	
-	//Label for Friendship
-	Label friendshipLabel;
-	Label friendshipCountLabel;
 	
-	//Label for Family
-	Label familyLabel;
-	Label familyCountLabel;
-	
-	//Label for Health
-	Label healthLabel;
-	Label healthCountLabel;
-	
-	//Label for Happiness
-	Label happinessLabel;
-	Label happinessCountLabel;
-	
-	//Label for Money
-	Label moneyLabel;
-	Label moneyCountLabel;
 	
 	HUD(SpriteBatch sb, Player player){
 		this.player = player;
@@ -89,7 +67,7 @@ public class HUD implements Disposable{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+		stage.dispose();
 	}
 
 }
