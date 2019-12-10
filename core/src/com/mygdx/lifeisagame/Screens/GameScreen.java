@@ -95,7 +95,7 @@ public class GameScreen implements Screen{
 	}
 	
 	public void handleInput(float dt) {
-		player.handleInput();
+		player.handleInput(dt);
 //		if(Gdx.input.isKeyPressed(Input.Keys.D))
 //			gamecam.position.x += 100 *dt;
 //		if(Gdx.input.isKeyPressed(Input.Keys.A))

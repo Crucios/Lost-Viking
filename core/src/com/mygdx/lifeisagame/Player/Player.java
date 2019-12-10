@@ -25,9 +25,11 @@ public class Player extends Sprite{
 	private boolean damaged;
 	
 	//Movement properties
-	private int limitMovementSpeed;
+	private double limitMovementSpeed;
 	private float movementSpeed;
-	private float flyTimer;
+	private boolean moving;
+	private float movingTimer;
+	private Vector2 movingVelocity;
 	
 	//Texture
 	TextureRegion ship_level1;
@@ -65,16 +67,18 @@ public class Player extends Sprite{
 		this.world = world;
 		this.position = position;
 		
-		//Initializatuin
+		//Initialization
 		level = 1;
 		
 		camGlitched = false;
 		shooting = false;
 		damaged = false;
 		
-		flyTimer = 0;
-		limitMovementSpeed = 2;
+		moving = false;
+		movingTimer = 0;
+		limitMovementSpeed = 1.5;
 		movementSpeed = 0.5f;
+		movingVelocity = new Vector2(0,0);
 		
 		//Properties
 		hitpoints = 100;
@@ -174,10 +178,13 @@ public class Player extends Sprite{
 	
 	public void update(float dt) {
 		//Update Timer
-		flyTimer += dt;
+		movingTimer += dt;
 		
 		if(level > 5)
 			level = 5;
+		
+		if(moving)
+			movingVelocity = b2body.getLinearVelocity();
 		
 		//Set Position
 		setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight() / 2);
@@ -187,26 +194,73 @@ public class Player extends Sprite{
 		setRegion(getFrame(dt));
 	}
 	
-	public void handleInput() {
+	public void handleInput(float dt) {
 		if(currentState != State.DESTROYED) {
-			if(Gdx.input.isKeyPressed(Input.Keys.W) && b2body.getLinearVelocity().y <= limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.S)) {
-				b2body.applyLinearImpulse(new Vector2(0,movementSpeed), b2body.getWorldCenter(), true);
+			if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)) {
+				if(Gdx.input.isKeyPressed(Input.Keys.W) && b2body.getLinearVelocity().y <= limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.S)) {
+					b2body.applyLinearImpulse(new Vector2(0,movementSpeed), b2body.getWorldCenter(), true);
+				}
+				
+				if(Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.D)) {
+					b2body.applyLinearImpulse(new Vector2(-movementSpeed,0), b2body.getWorldCenter(), true);
+				}
+				
+				if(Gdx.input.isKeyPressed(Input.Keys.S) && b2body.getLinearVelocity().y >= -limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.W)) {
+					b2body.applyLinearImpulse(new Vector2(0,-movementSpeed), b2body.getWorldCenter(), true);
+				}
+				
+				if(Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.A)) {
+					b2body.applyLinearImpulse(new Vector2(movementSpeed,0), b2body.getWorldCenter(), true);
+				}
+				moving = true;
+				movingTimer = 0;
 			}
-			
-			if(Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.D)) {
-				b2body.applyLinearImpulse(new Vector2(-movementSpeed,0), b2body.getWorldCenter(), true);
-			}
-			
-			if(Gdx.input.isKeyPressed(Input.Keys.S) && b2body.getLinearVelocity().y >= -limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.W)) {
-				b2body.applyLinearImpulse(new Vector2(0,-movementSpeed), b2body.getWorldCenter(), true);
-			}
-			
-			if(Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.A)) {
-				b2body.applyLinearImpulse(new Vector2(movementSpeed,0), b2body.getWorldCenter(), true);
+			else {
+				moving = false;
+//				if(movingTimer > 0.5f && !moving) {
+//					Vector2 velocity = new Vector2(b2body.getLinearVelocity());
+//					if(velocity.x )
+//					b2body.setLinearVelocity(new Vector2(0,0));
+//				}
+				
+				float velocityX = b2body.getLinearVelocity().x;
+				float velocityY = b2body.getLinearVelocity().y;
+				float applyImpulse = 0.05f;
+				
+				boolean toRight = false;
+				boolean toUp = false;
+				if(movingVelocity.x > 0) {
+					toRight = true;
+					velocityX -= dt + applyImpulse;
+				}
+				else if(movingVelocity.x < 0) {
+					velocityX += dt + applyImpulse;
+				}
+				
+				if(movingVelocity.y > 0) {
+					toUp = true;
+					velocityY -= dt + applyImpulse;
+				}
+				else if(movingVelocity.y < 0) {
+					velocityY += dt + applyImpulse;
+				}
+				
+				b2body.setLinearVelocity(new Vector2(velocityX, velocityY));
+				
+				if(toRight && velocityX < 0)
+					b2body.setLinearVelocity(new Vector2(0,velocityY));
+				else if(!toRight && velocityX > 0)
+					b2body.setLinearVelocity(new Vector2(0,velocityY));
+				
+				if(toUp && velocityY < 0)
+					b2body.setLinearVelocity(new Vector2(velocityX,0));
+				else if(!toUp && velocityY > 0)
+					b2body.setLinearVelocity(new Vector2(velocityX,0));
 			}
 		}
 		
-		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().x);
+		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
+		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
 	}
 	
 	//Public Access Method
