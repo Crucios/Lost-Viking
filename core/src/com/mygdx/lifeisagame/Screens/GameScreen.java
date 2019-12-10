@@ -84,6 +84,7 @@ public class GameScreen implements Screen{
 	
 	public void update(float dt) {
 		handleInput(dt);
+		world.step(1/60f, 6, 2);
 		player.update(dt);
 		gamecam.update();
 		renderer.setView(gamecam);

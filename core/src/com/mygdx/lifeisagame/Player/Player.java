@@ -90,7 +90,7 @@ public class Player extends Sprite{
 		shape.setAsBox(40 / LostViking.PPM, 70 / LostViking.PPM);
 		
 		fdef.shape = shape;
-		fdef.friction =  4.0f;
+		//fdef.friction =  4.0f;
 		b2body.createFixture(fdef);
 		fdef.isSensor = true;
 		b2body.createFixture(fdef).setUserData("player");
@@ -206,7 +206,7 @@ public class Player extends Sprite{
 			}
 		}
 		
-		Gdx.app.log("Player Position", position.x + " " + position.y);
+		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().x);
 	}
 	
 	//Public Access Method

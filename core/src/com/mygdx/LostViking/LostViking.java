@@ -28,7 +28,7 @@ public class LostViking extends Game {
 		//manager.load(..) -> load manager
 		manager.finishLoading();
 		
-		World tempWorld = new World(new Vector2(0, -10), true);
+		World tempWorld = new World(new Vector2(0, 0), true);
 		setScreen(new GameScreen(this, tempWorld, new Player(tempWorld, new Vector2(500,100)),"Maps/Map.tmx"));
 	}
 
