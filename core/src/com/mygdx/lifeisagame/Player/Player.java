@@ -92,7 +92,7 @@ public class Player extends Sprite{
 		movingVelocity = new Vector2(0,0);
 		
 		//Properties
-		hitpoints = 100;
+		hitpoints = 5;
 		
 		generateAnimation();
 		
