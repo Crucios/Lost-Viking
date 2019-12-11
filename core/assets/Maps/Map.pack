@@ -1,0 +1,12 @@
+
+Map.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+map
+  rotate: false
+  xy: 1, 1
+  size: 547, 968
+  orig: 547, 968
+  offset: 0, 0
+  index: -1

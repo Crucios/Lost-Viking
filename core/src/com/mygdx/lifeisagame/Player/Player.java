@@ -76,7 +76,7 @@ public class Player extends Sprite{
 		
 		moving = false;
 		movingTimer = 0;
-		limitMovementSpeed = 1.5;
+		limitMovementSpeed = 2;
 		movementSpeed = 0.5f;
 		movingVelocity = new Vector2(0,0);
 		
@@ -259,8 +259,8 @@ public class Player extends Sprite{
 			}
 		}
 		
-		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
-		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
+//		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
+//		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
 	}
 	
 	//Public Access Method

@@ -11,7 +11,7 @@ import com.mygdx.lifeisagame.Screens.GameScreen;
 public class LostViking extends Game {
 	public static final int WIDTH = 720;
 	public static final int HEIGHT = 1280;
-	public static final int V_WIDTH = 1920;
+	public static final int V_WIDTH = 1760;
 	public static final int V_HEIGHT = 1080;
 	public static final int MOVEMENT_CAMERA = 500;
 	public static final float PPM = 100;	//PixelPerMeter

@@ -1,7 +1,8 @@
 package com.mygdx.lifeisagame.Screens;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -17,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
-import com.mygdx.lifeisagame.Tools.WorldContactListener;
 import com.mygdx.lifeisagame.Tools.WorldCreator;
 
 public class GameScreen implements Screen{
@@ -37,6 +38,7 @@ public class GameScreen implements Screen{
 	protected TmxMapLoader mapLoader;
 	protected TiledMap map;
 	protected OrthogonalTiledMapRenderer renderer;
+	protected ArrayList<Map> mapAnimation;
 		
 	protected Music music;
 		
@@ -63,7 +65,9 @@ public class GameScreen implements Screen{
 		map = mapLoader.load(filepath_tmx);
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / LostViking.PPM);
 		
-		
+		mapAnimation = new ArrayList<Map>();
+		mapAnimation.add(new Map(new Vector2(0, 0), false));
+		mapAnimation.add(new Map(new Vector2(0, 1712), true));
 		
 		//First camera position
 		gamecam.position.set(4.8f,8.5f,0);
@@ -88,6 +92,19 @@ public class GameScreen implements Screen{
 		player.update(dt);
 		gamecam.update();
 		renderer.setView(gamecam);
+		
+		for(int i=0; i<mapAnimation.size(); i++) {
+			if(mapAnimation.get(i).isDisposed()) {
+				boolean rotate = false;
+				if(!mapAnimation.get(i).isRotate())
+					rotate = true;
+				
+				mapAnimation.remove(i);
+				mapAnimation.add(new Map(new Vector2(0, 1712), rotate));
+			}
+			else
+				mapAnimation.get(i).update(dt);
+		}
 		
 		//Update
 		//hud.update(dt);
@@ -121,14 +138,19 @@ public class GameScreen implements Screen{
 		
 		renderer.render();
 		
-		b2dr.render(world, gamecam.combined);
-		
 		//game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		//hud.stage.draw();
 		game.batch.setProjectionMatrix(gamecam.combined);		
 		game.batch.begin();
+		
+		for(int i=0;i<mapAnimation.size();i++) {
+			mapAnimation.get(i).draw(game.batch);
+		}
+			
 		player.draw(game.batch);
 		game.batch.end();
+		
+		b2dr.render(world, gamecam.combined);
 	}
 
 	@Override
