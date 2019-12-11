@@ -45,7 +45,7 @@ public class Map extends Sprite{
 			disposed = true;
 		}
 		
-		Gdx.app.log("Map Position", position.y + " ");
+//		Gdx.app.log("Map Position", position.y + " ");
 	}
 
 	public boolean isDisposed() {

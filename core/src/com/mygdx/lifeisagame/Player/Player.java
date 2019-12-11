@@ -20,7 +20,6 @@ public class Player extends Sprite{
 	//Properties
 	private int damage;
 	private int hitpoints; 
-	private int level;
 	private boolean shooting;
 	private boolean damaged;
 	
@@ -32,11 +31,20 @@ public class Player extends Sprite{
 	private Vector2 movingVelocity;
 	
 	//Texture
-	TextureRegion ship_level1;
-	TextureRegion ship_level2;
-	TextureRegion ship_level3;
-	TextureRegion ship_level4;
-	TextureRegion ship_level5;
+	TextureRegion swing_left;
+	TextureRegion boost_left;
+	TextureRegion reverse_left;
+	TextureRegion stop;
+	TextureRegion boost;
+	TextureRegion reverse;
+	TextureRegion swing_right;
+	TextureRegion boost_right;
+	TextureRegion reverse_right;
+	private boolean toRight;
+	private boolean toLeft;
+	private boolean boosting;
+	private boolean reversing;
+	
 	Animation shipDestroyed;
 	
 	//For gameCam glitch in screen
@@ -57,22 +65,25 @@ public class Player extends Sprite{
 	
 	//Animation
 	//State Player
-	public enum State{PLAYER_LEVEL1, PLAYER_LEVEL2, PLAYER_LEVEL3, PLAYER_LEVEL4, PLAYER_LEVEL5, DESTROYED}
+	public enum State{SWING_LEFT, BOOST_LEFT, REVERSE_LEFT, STOP, BOOST, REVERSE, SWING_RIGHT, BOOST_RIGHT, REVERSE_RIGHT, DESTROYED}
 	public State currentState;
 	public State previousState;
 	private float stateTimer;
 	
 	public Player(World world, Vector2 position){
-		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Player")));
+		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Alternative Player")));
 		this.world = world;
 		this.position = position;
 		
 		//Initialization
-		level = 1;
-		
 		camGlitched = false;
 		shooting = false;
 		damaged = false;
+		
+		toRight = false;
+		toLeft = false;
+		boosting = false;
+		reversing = false;
 		
 		moving = false;
 		movingTimer = 0;
@@ -110,16 +121,21 @@ public class Player extends Sprite{
 	}
 	
 	public void generateAnimation() {
-		ship_level1 = new TextureRegion(getTexture(), 71, 351, 102, 96);
-		ship_level2 = new TextureRegion(getTexture(), 215, 350, 123, 97);
-		ship_level3 = new TextureRegion(getTexture(), 369, 343, 126, 108);
-		ship_level4 = new TextureRegion(getTexture(), 532, 335, 110, 128);
-		ship_level5 = new TextureRegion(getTexture(), 672, 327, 140, 143);
+		swing_left = new TextureRegion(getTexture(), 323, 1, 38, 41);
+		boost_left = new TextureRegion(getTexture(), 324, 43, 37, 46);
+		reverse_left = new TextureRegion(getTexture(), 326, 89, 35, 43);
+		stop = new TextureRegion(getTexture(), 362, 0, 46, 41);
+		boost = new TextureRegion(getTexture(), 363, 42, 44, 47);
+		reverse = new TextureRegion(getTexture(), 362, 89, 46, 43);
+		swing_right = new TextureRegion(getTexture(), 409, 0, 38, 41);
+		boost_right = new TextureRegion(getTexture(), 410, 42, 36, 47);
+		reverse_right = new TextureRegion(getTexture(), 409, 88, 37, 44);
+		
 		//65, 29
 		Array<TextureRegion> frames = new Array<TextureRegion>();
 		for(int i=0; i<9; i++) {
 			for(int j=0; j<9; j++) {
-				frames.add(new TextureRegion(getTexture(), i*64, j*64, 64, 64));
+				frames.add(new TextureRegion(getTexture(), i*64, j*64 + 40, 64, 64));
 			}
 		}
 		shipDestroyed = new Animation(0.1f, frames);
@@ -134,27 +150,39 @@ public class Player extends Sprite{
 		case DESTROYED:
 			region = (TextureRegion) shipDestroyed.getKeyFrame(stateTimer, true);
 			break;
-		case PLAYER_LEVEL1:
-			region = ship_level1;
+		case SWING_LEFT:
+			region = swing_left;
 			break;
-		case PLAYER_LEVEL2:
-			region = ship_level2;
+		case BOOST_LEFT:
+			region = boost_left;
 			break;
-		case PLAYER_LEVEL3:
-			region = ship_level3;
+		case REVERSE_LEFT:
+			region = reverse_left;
 			break;
-		case PLAYER_LEVEL4:
-			region = ship_level4;
+		case STOP:
+			region = stop;
 			break;
-		case PLAYER_LEVEL5:
-			region = ship_level5;
+		case BOOST:
+			region = boost;
+			break;
+		case REVERSE:
+			region = reverse;
+			break;
+		case SWING_RIGHT:
+			region = swing_right;
+			break;
+		case BOOST_RIGHT:
+			region = boost_right;
+			break;
+		case REVERSE_RIGHT:
+			region = reverse_right;
 			break;
 			default:
-				region = ship_level1;
+				region = stop;
 				break;
 		}
 		
-		setSize((float) 0.9,(float) 0.9);
+		setSize((float) 1.8,(float) 1.8);
 		stateTimer = currentState == previousState ? stateTimer + dt : 0;
 		previousState = currentState;
 		return region;
@@ -164,24 +192,35 @@ public class Player extends Sprite{
 		if(hitpoints <= 0)
 			return State.DESTROYED;
 		
-		if(level == 1)
-			return State.PLAYER_LEVEL1;
-		else if(level == 2)
-			return State.PLAYER_LEVEL2;
-		else if(level == 3)
-			return State.PLAYER_LEVEL3;
-		else if(level == 4)
-			return State.PLAYER_LEVEL4;
-		else
-			return State.PLAYER_LEVEL5;
+		if(boosting) {
+			if(toLeft)
+				return State.BOOST_LEFT;
+			else if(toRight)
+				return State.BOOST_RIGHT;
+			else
+				return State.BOOST;
+		}
+		else if(reversing) {
+			if(toLeft)
+				return State.REVERSE_LEFT;
+			else if (toRight)
+				return State.REVERSE_RIGHT;
+			else
+				return State.REVERSE;
+		}
+		else {
+			if(toLeft)
+				return State.SWING_LEFT;
+			else if(toRight)
+				return State.SWING_RIGHT;
+			else
+				return State.STOP;
+		}
 	}
 	
 	public void update(float dt) {
 		//Update Timer
 		movingTimer += dt;
-		
-		if(level > 5)
-			level = 5;
 		
 		if(moving)
 			movingVelocity = b2body.getLinearVelocity();
@@ -199,29 +238,34 @@ public class Player extends Sprite{
 			if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.D)) {
 				if(Gdx.input.isKeyPressed(Input.Keys.W) && b2body.getLinearVelocity().y <= limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.S)) {
 					b2body.applyLinearImpulse(new Vector2(0,movementSpeed), b2body.getWorldCenter(), true);
+					boosting = true;
+					reversing = false;
 				}
 				
 				if(Gdx.input.isKeyPressed(Input.Keys.A) && b2body.getLinearVelocity().x >= -limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.D)) {
 					b2body.applyLinearImpulse(new Vector2(-movementSpeed,0), b2body.getWorldCenter(), true);
+					toRight = false;
+					toLeft = true;
 				}
 				
 				if(Gdx.input.isKeyPressed(Input.Keys.S) && b2body.getLinearVelocity().y >= -limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.W)) {
 					b2body.applyLinearImpulse(new Vector2(0,-movementSpeed), b2body.getWorldCenter(), true);
+					reversing = true;
+					boosting = false;
 				}
 				
 				if(Gdx.input.isKeyPressed(Input.Keys.D) && b2body.getLinearVelocity().x <= limitMovementSpeed && !Gdx.input.isKeyPressed(Input.Keys.A)) {
 					b2body.applyLinearImpulse(new Vector2(movementSpeed,0), b2body.getWorldCenter(), true);
+					toRight = true;
+					toLeft = false;
 				}
 				moving = true;
 				movingTimer = 0;
 			}
 			else {
 				moving = false;
-//				if(movingTimer > 0.5f && !moving) {
-//					Vector2 velocity = new Vector2(b2body.getLinearVelocity());
-//					if(velocity.x )
-//					b2body.setLinearVelocity(new Vector2(0,0));
-//				}
+				reversing = false;
+				boosting = false;
 				
 				float velocityX = b2body.getLinearVelocity().x;
 				float velocityY = b2body.getLinearVelocity().y;
@@ -247,18 +291,30 @@ public class Player extends Sprite{
 				
 				b2body.setLinearVelocity(new Vector2(velocityX, velocityY));
 				
-				if(toRight && velocityX < 0)
+				if(toRight && velocityX < 0) {
 					b2body.setLinearVelocity(new Vector2(0,velocityY));
-				else if(!toRight && velocityX > 0)
+					this.toRight = false;
+					this.toLeft = false;
+				}
+				else if(!toRight && velocityX > 0) {
 					b2body.setLinearVelocity(new Vector2(0,velocityY));
-				
-				if(toUp && velocityY < 0)
+					this.toLeft = false;
+					this.toRight = false;
+				}
+									
+				if(toUp && velocityY < 0) {
 					b2body.setLinearVelocity(new Vector2(velocityX,0));
-				else if(!toUp && velocityY > 0)
+					this.boosting = false;
+					this.reversing = false;
+				}
+				else if(!toUp && velocityY > 0) {
 					b2body.setLinearVelocity(new Vector2(velocityX,0));
+					this.boosting = false;
+					this.reversing = false;
+				}
 			}
 		}
-		
+
 //		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
 //		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
 	}
