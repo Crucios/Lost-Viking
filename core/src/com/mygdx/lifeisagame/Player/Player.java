@@ -1,5 +1,7 @@
 package com.mygdx.lifeisagame.Player;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.LostViking.LostViking;
+import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
 
 public class Player extends Sprite{
 	//Properties
@@ -44,6 +47,13 @@ public class Player extends Sprite{
 	private boolean toLeft;
 	private boolean boosting;
 	private boolean reversing;
+	
+	//bullet
+	private ArrayList<BaseBullet> bullet;
+	private float bulletTimer;
+	private Vector2 bulletPosition;
+	//Rocket
+	private float rocketTimer;
 	
 	Animation shipDestroyed;
 	
@@ -90,6 +100,11 @@ public class Player extends Sprite{
 		limitMovementSpeed = 2;
 		movementSpeed = 0.5f;
 		movingVelocity = new Vector2(0,0);
+		
+		//bullet
+		bulletTimer = 2;
+		bullet = new ArrayList<BaseBullet>();
+		rocketTimer = 5;
 		
 		//Properties
 		hitpoints = 100;
@@ -228,7 +243,31 @@ public class Player extends Sprite{
 		//Set Position
 		setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight() / 2);
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
-		
+				
+		//bullet	
+		bulletTimer += dt;
+		rocketTimer += dt;
+		bulletPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y + 0.2f);
+		//System.out.println("bullet Position: "+bulletPosition.x + " " + bulletPosition.y);
+		for(BaseBullet bul : bullet) {
+			if(!bul.getDestroy()) {
+				bul.update(dt);
+			}
+		}
+		if(bulletTimer > 0.5f) {
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.1f, bulletPosition.y),0, true));
+			//bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y - 0.3f)));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),15,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),-15,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),30,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),-30,true));
+			bulletTimer = 0;
+		}
+		/*if(rocketTimer > 1f) {
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0,false));
+			rocketTimer = 0;
+		}*/
 		//Set Texture Region
 		setRegion(getFrame(dt));
 	}
@@ -350,5 +389,8 @@ public class Player extends Sprite{
 
 	public void setElapsed(float elapsed) {
 		this.elapsed = elapsed;
+	}
+	public ArrayList<BaseBullet> getBullet(){
+		return bullet;
 	}
 }
