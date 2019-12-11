@@ -1,6 +1,7 @@
 package com.mygdx.lifeisagame.Screens;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -17,8 +18,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
+import com.mygdx.lifeisagame.Enemy.EnemyBase;
 import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
+import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
 import com.mygdx.lifeisagame.Tools.WorldCreator;
 
 public class GameScreen implements Screen{
@@ -47,6 +50,12 @@ public class GameScreen implements Screen{
 	//Box2D
 	protected World world;
 	protected Box2DDebugRenderer b2dr;
+	
+	//enemy
+	protected ArrayList<EnemyBase> enemy;
+	protected float enemyTimer;
+	protected Random rand;
+	protected ArrayList<BaseBullet> bullet;
 	
 	
 	public GameScreen(LostViking game, World world, Player player, String filepath_tmx){
@@ -83,6 +92,11 @@ public class GameScreen implements Screen{
 		//Generate Wall and Ground
 		new WorldCreator(world, map);
 		
+		enemy = new ArrayList<EnemyBase>();
+		enemyTimer = 0;
+		rand = new Random();
+		bullet = player.getBullet();
+		
 		//world.setContactListener(new WorldContactListener());
 	}
 	
@@ -105,7 +119,35 @@ public class GameScreen implements Screen{
 			else
 				mapAnimation.get(i).update(dt);
 		}
-		
+		bullet = player.getBullet();
+		enemyTimer += dt;
+		for(EnemyBase ene : enemy) {
+			if(!ene.getDestroy()) {
+				ene.update(dt);
+			}
+		}
+		if(enemyTimer > 3f) {
+			enemy.add(new EnemyBase(world,rand.nextInt(5)));
+			enemyTimer = 0;
+		}
+		for(int i = 0;i<enemy.size();i++) {
+			if(!enemy.get(i).getDestroy()) {
+				enemy.get(i).update(dt);
+				//Collision Detection
+				for(int j=0;j<bullet.size();j++) {
+					if(!bullet.get(j).getDestroy()) {
+						if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + 0.24 && bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - 0.24 && bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + 0.5f&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - 0.12 && bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - 0.12) {
+							bullet.get(j).onHit(enemy.get(i));
+							System.out.println("hiting");
+							System.out.println("Enemy Position : " + enemy.get(i).getPosition());
+							System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
+						}
+						System.out.println("Enemy Position : " + enemy.get(i).getPosition());
+						System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
+					}
+				}
+			}
+		}
 		//Update
 		//hud.update(dt);
 		
