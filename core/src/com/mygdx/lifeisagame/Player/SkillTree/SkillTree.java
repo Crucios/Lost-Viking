@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.lifeisagame.Player.Player;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.QuadShoot4s;
 
 public class SkillTree{
 	protected World world;
@@ -21,6 +22,11 @@ public class SkillTree{
 		Node newNode = new Basic(3, this.player, this.world);
 		positionTree = new int[] {0};
 		add(newNode, positionTree);
+		newNode = new QuadShoot4s(2,this.player, this.world);
+		positionTree = new int[] {0,0};
+		add(newNode, positionTree);
+		
+		
 
 		//Declare Tree in here
 		

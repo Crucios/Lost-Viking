@@ -19,6 +19,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Enemy.EnemyBase;
+import com.mygdx.lifeisagame.Enemy.double_shoot;
+import com.mygdx.lifeisagame.Enemy.side_melee;
+import com.mygdx.lifeisagame.Enemy.side_shoot;
+import com.mygdx.lifeisagame.Enemy.straight_melee;
+import com.mygdx.lifeisagame.Enemy.straight_shoot;
 import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
@@ -125,9 +130,28 @@ public class GameScreen implements Screen{
 				ene.update(dt);
 			}
 		}
-		if(enemyTimer > 3f) {
-			enemy.add(new EnemyBase(world,rand.nextInt(5)));
-			enemyTimer = 0;
+		if(enemyTimer > 0.5f) {
+			int enemyRandom = rand.nextInt(6);
+			if(enemyRandom == 1) {
+				enemy.add(new straight_melee(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 2) {
+				enemy.add(new straight_shoot(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 3) {
+				enemy.add(new side_shoot(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 4) {
+				enemy.add(new double_shoot(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 5) {
+				enemy.add(new side_melee(world,player));
+				enemyTimer = 0;
+			}
 		}
 		for(int i = 0;i<enemy.size();i++) {
 			if(!enemy.get(i).getDestroy()) {
@@ -149,7 +173,6 @@ public class GameScreen implements Screen{
 		}
 		//Update
 		//hud.update(dt);
-		
 	}
 	
 	public void handleInput(float dt) {
@@ -187,7 +210,11 @@ public class GameScreen implements Screen{
 		for(int i=0;i<mapAnimation.size();i++) {
 			mapAnimation.get(i).draw(game.batch);
 		}
-			
+		for(EnemyBase ene : enemy) {
+			if(!ene.getDestroy()) {
+				ene.draw(game.batch);
+			}
+		}	
 		player.draw(game.batch);
 		game.batch.end();
 		

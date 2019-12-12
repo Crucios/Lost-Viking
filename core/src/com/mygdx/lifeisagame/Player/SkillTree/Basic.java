@@ -38,15 +38,9 @@ public class Basic extends Node{
 				}
 			}
 			if(bulletTimer > 0.5f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.1f, bulletPosition.y),0, true));
-			//bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y - 0.3f)));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),15,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),-15,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),30,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),-30,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0, true));
 			bulletTimer = 0;
-			}
+			}		
 		}
 	}
 
