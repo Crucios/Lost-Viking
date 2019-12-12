@@ -25,9 +25,6 @@ public class SkillTree{
 		newNode = new QuadShoot4s(2,this.player, this.world);
 		positionTree = new int[] {0,0};
 		add(newNode, positionTree);
-		
-		
-
 		//Declare Tree in here
 		
 	}

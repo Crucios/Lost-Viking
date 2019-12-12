@@ -13,9 +13,9 @@ public class side_shoot extends EnemyBase {
 	public side_shoot(World world, Player player) {
 		super(world, player);
 		// TODO Auto-generated constructor stub
-		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
+		enemy = new TextureRegion(getTexture(), 36,211,89, 89);
 		enemy.flip(false, true);
-		setBounds(32,36,89 / LostViking.PPM,89 / LostViking.PPM);
+		setBounds(36,211,89 / LostViking.PPM * 1.3f,89 / LostViking.PPM * 1.3f);
 		definePistolBullet();
 	}
 	@Override
@@ -37,9 +37,9 @@ public class side_shoot extends EnemyBase {
 				bul.update(dt);
 			}
 		}
-		if(bulletTimer > 0.5f && hitPoint >2) {
-			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y),-60));
-			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y),60));
+		if(bulletTimer > 0.5f && hitPoint > 2) {
+			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),-60));
+			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),60));
 			bulletTimer = 0;
 		}
 		if(isHit) {
@@ -56,7 +56,7 @@ public class side_shoot extends EnemyBase {
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(24,48);
+		defineHitBox(35,52);
 	}
 
 }

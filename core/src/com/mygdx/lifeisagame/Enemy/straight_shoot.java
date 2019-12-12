@@ -13,9 +13,9 @@ public class straight_shoot extends EnemyBase{
 	public straight_shoot(World world, Player player) {
 		super(world, player);
 		// TODO Auto-generated constructor stub
-		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
+		enemy = new TextureRegion(getTexture(), 110,130,83, 89);
 		enemy.flip(false, true);
-		setBounds(32,36,89 / LostViking.PPM,89 / LostViking.PPM);
+		setBounds(110,130,83 / LostViking.PPM * 1.5f,89 / LostViking.PPM * 1.5f);
 		definePistolBullet();
 	}
 	@Override
@@ -55,6 +55,6 @@ public class straight_shoot extends EnemyBase{
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(24,48);
+		defineHitBox(40,52);
 	}
 }

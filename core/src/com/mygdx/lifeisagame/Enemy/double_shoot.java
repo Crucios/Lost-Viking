@@ -56,7 +56,7 @@ public class double_shoot extends EnemyBase {
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(24,48);
+		defineHitBox(70,52);
 	}
 
 }

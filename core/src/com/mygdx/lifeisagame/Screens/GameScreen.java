@@ -130,7 +130,7 @@ public class GameScreen implements Screen{
 				ene.update(dt);
 			}
 		}
-		if(enemyTimer > 0.5f) {
+		if(enemyTimer > 2f) {
 			int enemyRandom = rand.nextInt(6);
 			if(enemyRandom == 1) {
 				enemy.add(new straight_melee(world,player));

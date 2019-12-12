@@ -14,7 +14,7 @@ public class straight_melee extends EnemyBase {
 		// TODO Auto-generated constructor stub	
 		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
 		enemy.flip(false, true);
-		setBounds(32,36,89 / LostViking.PPM,89 / LostViking.PPM);
+		setBounds(32,36,89 / LostViking.PPM *1.5f,89 / LostViking.PPM * 1.5f);
 		definePistolBullet();
 	}
 	@Override
@@ -43,6 +43,6 @@ public class straight_melee extends EnemyBase {
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(24,48);
+		defineHitBox(45,52);
 	}
 }

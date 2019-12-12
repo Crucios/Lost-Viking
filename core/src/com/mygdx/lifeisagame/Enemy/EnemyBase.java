@@ -33,6 +33,7 @@ public abstract class EnemyBase extends Sprite {
 	protected float bulletTimer;
 	protected int damage;
 	protected int hitPoint;
+	protected int score;
 	protected boolean isHit;
 	protected boolean stop;
 	protected boolean destroy;
