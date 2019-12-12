@@ -2,6 +2,7 @@ package com.mygdx.lifeisagame.Player.SkillTree;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,6 +22,7 @@ public class Basic extends Node{
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;
+		textureRegion = new TextureRegion(texture, 584, 0, 135,188);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class MainMenuScreen implements Screen {
 	private static final int PLAY_BUTTON_WIDTH=200;
 	private static final int PLAY_BUTTON_HEIGHT=100;
 	private static final int PLAY_BUTTON_Y=500;
-	private static final int EXIT_BUTTON_Y=350;
+	private static final int EXIT_BUTTON_Y=400;
 	private Viewport viewPort;
 	private Stage stage;
 	private Player player;
@@ -56,19 +56,20 @@ public class MainMenuScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		stage.draw();
 		game.batch.begin();
 		
-		game.batch.draw(backgroundMainMenu,0,0);
+		game.batch.draw(backgroundMainMenu,0,0,720,1280);
 		int a =(LostViking.WIDTH-PLAY_BUTTON_WIDTH)/2;
 		int b =(LostViking.WIDTH-EXIT_BUTTON_WIDTH)/2;
 		//Play
-		if(Gdx.input.getX()<=440&&Gdx.input.getX()>=270&&Gdx.input.getY()<=530&&Gdx.input.getY()>=480)
+		if(Gdx.input.getX()<=440&&Gdx.input.getX()>=270&&Gdx.input.getY()<=620&&Gdx.input.getY()>=580)
 		{
 			game.batch.draw(playButtonActive, a,PLAY_BUTTON_Y,PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT);
 			if (Gdx.input.justTouched()) {
             	music.stop();
                 this.dispose();
-                World tempWorld = new World(new Vector2(0, -10),true);
+                World tempWorld = new World(new Vector2(0, 0),true);
                 GameScreen screenGame = new GameScreen(game, tempWorld, new Player(tempWorld, new Vector2(500, 100)), "Maps/Map.tmx");
                 game.setScreen(screenGame);
             }
@@ -79,7 +80,7 @@ public class MainMenuScreen implements Screen {
 		}
 		
 		//Exit
-		if(Gdx.input.getX()<=430&&Gdx.input.getX()>=285&&Gdx.input.getY()<=675&&Gdx.input.getY()>=630)
+		if(Gdx.input.getX()<=430&&Gdx.input.getX()>=285&&Gdx.input.getY()<=690&&Gdx.input.getY()>=655)
 		{
 			game.batch.draw(exitButtonActive, b,EXIT_BUTTON_Y,EXIT_BUTTON_WIDTH,EXIT_BUTTON_HEIGHT);
 			if (Gdx.input.justTouched()) {

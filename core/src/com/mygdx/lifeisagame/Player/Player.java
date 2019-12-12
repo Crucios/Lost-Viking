@@ -26,7 +26,10 @@ public class Player extends Sprite{
 	private int hitpoints; 
 	private boolean shooting;
 	private boolean damaged;
+	private boolean invicible;
 	private SkillTree skillTree;
+	private int dodgeRate;
+	private int criticalRate;
 	
 	//Movement properties
 	private double limitMovementSpeed;
@@ -58,6 +61,7 @@ public class Player extends Sprite{
 	private float rocketTimer;
 	
 	Animation shipDestroyed;
+	Animation shipDamaged;
 	
 	//For gameCam glitch in screen
 	private boolean camGlitched;
@@ -73,11 +77,11 @@ public class Player extends Sprite{
 	public Body b2body; 
 	
 	//Elapsed Time Player
-	private float elapsed;
+	private float elapsedInvicible;
 	
 	//Animation
 	//State Player
-	public enum State{SWING_LEFT, BOOST_LEFT, REVERSE_LEFT, STOP, BOOST, REVERSE, SWING_RIGHT, BOOST_RIGHT, REVERSE_RIGHT, DESTROYED}
+	public enum State{SWING_LEFT, BOOST_LEFT, REVERSE_LEFT, STOP, BOOST, REVERSE, SWING_RIGHT, BOOST_RIGHT, REVERSE_RIGHT, DAMAGED, DESTROYED}
 	public State currentState;
 	public State previousState;
 	private float stateTimer;
@@ -91,6 +95,7 @@ public class Player extends Sprite{
 		camGlitched = false;
 		shooting = false;
 		damaged = false;
+		invicible = false;
 		
 		toRight = false;
 		toLeft = false;
@@ -103,6 +108,8 @@ public class Player extends Sprite{
 		movementSpeed = 0.5f;
 		movingVelocity = new Vector2(0,0);
 		
+		elapsedInvicible = 0;
+		
 		//bullet
 		bulletTimer = 2;
 		bullet = new ArrayList<BaseBullet>();
@@ -111,6 +118,8 @@ public class Player extends Sprite{
 		//Properties
 		hitpoints = 5;
 		damage = 5;
+		dodgeRate = 0;
+		criticalRate = 0;
 		
 		generateAnimation();
 		
@@ -151,7 +160,6 @@ public class Player extends Sprite{
 		boost_right = new TextureRegion(getTexture(), 410, 42, 36, 47);
 		reverse_right = new TextureRegion(getTexture(), 409, 88, 37, 44);
 		
-		//65, 29
 		Array<TextureRegion> frames = new Array<TextureRegion>();
 		for(int i=0; i<9; i++) {
 			for(int j=0; j<9; j++) {
@@ -160,6 +168,11 @@ public class Player extends Sprite{
 		}
 		shipDestroyed = new Animation(0.1f, frames);
 		frames.clear();
+		
+		for(int i=0; i<2; i++) {
+			frames.add(new TextureRegion(getTexture(), 362 + i*153, 0, 46, 41));
+		}
+		shipDamaged = new Animation(1f, frames);
 	}
 	
 	public TextureRegion getFrame(float dt) {
@@ -211,6 +224,8 @@ public class Player extends Sprite{
 	public State getState() {
 		if(hitpoints <= 0)
 			return State.DESTROYED;
+		if(damaged)
+			return State.DAMAGED;
 		
 		if(boosting) {
 			if(toLeft)
@@ -251,6 +266,17 @@ public class Player extends Sprite{
 		
 		//Bullet
 		skillTree.update(skillTree.getRoot(), dt);
+		
+		//Grant Invicible when hit
+		if(damaged) {
+			invicible = true;
+			elapsedInvicible = 0;
+		}
+		
+		if(invicible && elapsedInvicible > 2.0f) {
+			invicible = false;
+			damaged = false;
+		}
 		
 		/*if(rocketTimer > 1f) {
 			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0,false));
@@ -340,6 +366,8 @@ public class Player extends Sprite{
 					this.reversing = false;
 				}
 			}
+			
+			
 		}
 
 //		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
@@ -372,11 +400,11 @@ public class Player extends Sprite{
 	}
 
 	public float getElapsed() {
-		return elapsed;
+		return elapsedInvicible;
 	}
 
 	public void setElapsed(float elapsed) {
-		this.elapsed = elapsed;
+		this.elapsedInvicible = elapsed;
 	}
 	public ArrayList<BaseBullet> getBullet(){
 		return bullet;
@@ -416,5 +444,53 @@ public class Player extends Sprite{
 
 	public void setBullet(ArrayList<BaseBullet> bullet) {
 		this.bullet = bullet;
+	}
+
+	public int getHitpoints() {
+		return hitpoints;
+	}
+
+	public void setHitpoints(int hitpoints) {
+		this.hitpoints = hitpoints;
+	}
+
+	public double getLimitMovementSpeed() {
+		return limitMovementSpeed;
+	}
+
+	public void setLimitMovementSpeed(double limitMovementSpeed) {
+		this.limitMovementSpeed = limitMovementSpeed;
+	}
+
+	public float getMovementSpeed() {
+		return movementSpeed;
+	}
+
+	public void setMovementSpeed(float movementSpeed) {
+		this.movementSpeed = movementSpeed;
+	}
+
+	public float getRocketTimer() {
+		return rocketTimer;
+	}
+
+	public void setRocketTimer(float rocketTimer) {
+		this.rocketTimer = rocketTimer;
+	}
+
+	public int getDodgeRate() {
+		return dodgeRate;
+	}
+
+	public void setDodgeRate(int dodgeRate) {
+		this.dodgeRate = dodgeRate;
+	}
+
+	public int getCriticalRate() {
+		return criticalRate;
+	}
+
+	public void setCriticalRate(int criticalRate) {
+		this.criticalRate = criticalRate;
 	}
 }

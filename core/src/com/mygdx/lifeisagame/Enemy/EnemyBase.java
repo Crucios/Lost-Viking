@@ -132,8 +132,9 @@ public class EnemyBase extends Sprite {
 	}
 	
 	public void onHit() {
-		isHit = true;
+		
 	}
+	
 	public ArrayList<BaseProjectiles> getEnemyBullet(){
 		return enemyBullet;
 	}
