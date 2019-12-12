@@ -6,10 +6,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
+import com.mygdx.lifeisagame.Player.Player;
 
 public class MainMenuScreen implements Screen {
 
@@ -21,6 +24,7 @@ public class MainMenuScreen implements Screen {
 	private static final int EXIT_BUTTON_Y=350;
 	private Viewport viewPort;
 	private Stage stage;
+	private Player player;
 	private Music music;
 	LostViking game;
 	Texture playButtonActive;
@@ -57,20 +61,31 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(backgroundMainMenu,0,0);
 		int a =(LostViking.WIDTH-PLAY_BUTTON_WIDTH)/2;
 		int b =(LostViking.WIDTH-EXIT_BUTTON_WIDTH)/2;
-		System.out.println("X: "+Gdx.input.getX());
-		System.out.println("Y: "+Gdx.input.getY());
+		//Play
 		if(Gdx.input.getX()<=440&&Gdx.input.getX()>=270&&Gdx.input.getY()<=530&&Gdx.input.getY()>=480)
 		{
 			game.batch.draw(playButtonActive, a,PLAY_BUTTON_Y,PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT);
+			if (Gdx.input.justTouched()) {
+            	music.stop();
+                this.dispose();
+                World tempWorld = new World(new Vector2(0, -10),true);
+                GameScreen screenGame = new GameScreen(game, tempWorld, new Player(tempWorld, new Vector2(500, 100)), "Maps/Map.tmx");
+                game.setScreen(screenGame);
+            }
 		}
 		else
 		{
 			game.batch.draw(playButtonInactive, a,PLAY_BUTTON_Y,PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT);
 		}
 		
+		//Exit
 		if(Gdx.input.getX()<=430&&Gdx.input.getX()>=285&&Gdx.input.getY()<=675&&Gdx.input.getY()>=630)
 		{
 			game.batch.draw(exitButtonActive, b,EXIT_BUTTON_Y,EXIT_BUTTON_WIDTH,EXIT_BUTTON_HEIGHT);
+			if (Gdx.input.justTouched()) {
+            	music.stop();
+                Gdx.app.exit();
+            }
 		}
 		else
 		{

@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Enemy.EnemyBase;
+import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
 import com.mygdx.lifeisagame.Tools.WorldCreator;
@@ -31,9 +32,9 @@ public class GameScreen implements Screen{
 	protected OrthographicCamera gamecam;
 	protected Viewport gamePort;
 	protected double maxLeft;
-	protected double maxRight;
-		
+	protected double maxRight;	
 	//HUD
+	private HUD hud;
 	
 	//Tiled map variables
 	protected TmxMapLoader mapLoader;
@@ -197,6 +198,24 @@ public class GameScreen implements Screen{
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 		gamePort.update(width, height);
+	}
+
+	
+	protected Viewport getGamePort() {
+		return gamePort;
+	}
+
+	protected void setGamePort(Viewport gamePort) {
+		this.gamePort = gamePort;
+	}
+
+	
+	protected OrthographicCamera getGamecam() {
+		return gamecam;
+	}
+
+	protected void setGamecam(OrthographicCamera gamecam) {
+		this.gamecam = gamecam;
 	}
 
 	@Override
