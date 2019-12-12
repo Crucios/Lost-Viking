@@ -19,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Enemy.EnemyBase;
-import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
 import com.mygdx.lifeisagame.Tools.WorldCreator;
@@ -35,7 +34,6 @@ public class GameScreen implements Screen{
 	protected double maxRight;
 		
 	//HUD
-	private HUD hud;
 	
 	//Tiled map variables
 	protected TmxMapLoader mapLoader;
