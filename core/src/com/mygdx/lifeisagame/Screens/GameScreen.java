@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -19,6 +20,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Enemy.EnemyBase;
+import com.mygdx.lifeisagame.Enemy.double_shoot;
+import com.mygdx.lifeisagame.Enemy.side_melee;
+import com.mygdx.lifeisagame.Enemy.side_shoot;
+import com.mygdx.lifeisagame.Enemy.straight_melee;
+import com.mygdx.lifeisagame.Enemy.straight_shoot;
 import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
@@ -61,6 +67,8 @@ public class GameScreen implements Screen{
 		this.game = game;
 		this.player = player;
 		this.world = world;
+		
+		hud = new HUD(game.batch, this.player);
 		
 		//Camera movement
 		gamecam = new OrthographicCamera();
@@ -125,9 +133,28 @@ public class GameScreen implements Screen{
 				ene.update(dt);
 			}
 		}
-		if(enemyTimer > 3f) {
-			enemy.add(new EnemyBase(world,rand.nextInt(5)));
-			enemyTimer = 0;
+		if(enemyTimer > 2f) {
+			int enemyRandom = rand.nextInt(6);
+			if(enemyRandom == 1) {
+				enemy.add(new straight_melee(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 2) {
+				enemy.add(new straight_shoot(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 3) {
+				enemy.add(new side_shoot(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 4) {
+				enemy.add(new double_shoot(world,player));
+				enemyTimer = 0;
+			}
+			else if(enemyRandom == 5) {
+				enemy.add(new side_melee(world,player));
+				enemyTimer = 0;
+			}
 		}
 		for(int i = 0;i<enemy.size();i++) {
 			if(!enemy.get(i).getDestroy()) {
@@ -148,22 +175,10 @@ public class GameScreen implements Screen{
 			}
 		}
 		//Update
-		//hud.update(dt);
-		
-	}
+		hud.update(dt);
 	
 	public void handleInput(float dt) {
 		player.handleInput(dt);
-//		if(Gdx.input.isKeyPressed(Input.Keys.D))
-//			gamecam.position.x += 100 *dt;
-//		if(Gdx.input.isKeyPressed(Input.Keys.A))
-//			gamecam.position.x -= 100*dt;
-//		if(Gdx.input.isKeyPressed(Input.Keys.W))
-//			gamecam.position.y += 100*dt;
-//		if(Gdx.input.isKeyPressed(Input.Keys.S))
-//			gamecam.position.y -= 100*dt;
-		
-//		Gdx.app.log("Camera Position", gamecam.position.x + " " + gamecam.position.y);
 	}
 	
 	@Override
@@ -178,18 +193,23 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		renderer.render();
-		
-		//game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-		//hud.stage.draw();
+	
 		game.batch.setProjectionMatrix(gamecam.combined);		
 		game.batch.begin();
 		
 		for(int i=0;i<mapAnimation.size();i++) {
 			mapAnimation.get(i).draw(game.batch);
 		}
-			
+		for(EnemyBase ene : enemy) {
+			if(!ene.getDestroy()) {
+				ene.draw(game.batch);
+			}
+		}	
 		player.draw(game.batch);
 		game.batch.end();
+		
+		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+		hud.stage.draw();
 		
 		b2dr.render(world, gamecam.combined);
 	}
@@ -239,7 +259,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+		hud.dispose();
 	}
 
 }

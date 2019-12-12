@@ -31,7 +31,7 @@ public class Node extends Sprite{
 		if(nodes.get(nNode[index]) == null)
 			nodes.set(nNode[index], newNode);
 		else
-			nodes.get(nNode[index]).add(newNode, nNode, index++);
+			nodes.get(nNode[index]).add(newNode, nNode, ++index);
 	}
 
 	public void update(float dt) {

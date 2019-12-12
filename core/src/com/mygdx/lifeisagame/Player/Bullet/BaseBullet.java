@@ -36,7 +36,7 @@ public class BaseBullet extends Sprite {
 		super(new AtlasRegion(new TextureAtlas("Item/bullet.pack").findRegion("bullet")));
 		this.world = world;		
 		this.destroy = false;
-		this.damage = 2;
+		this.damage = 5;
 		this.isBullet = isBullet;
 		hasDamaged = false;
 		stop = true;

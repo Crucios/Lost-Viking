@@ -24,6 +24,7 @@ public class Player extends Sprite{
 	//Properties
 	private int damage;
 	private int hitpoints; 
+	private int score;
 	private boolean shooting;
 	private boolean damaged;
 	private boolean invicible;
@@ -120,6 +121,7 @@ public class Player extends Sprite{
 		damage = 5;
 		dodgeRate = 0;
 		criticalRate = 0;
+		score = 0;
 		
 		generateAnimation();
 		
@@ -170,9 +172,9 @@ public class Player extends Sprite{
 		frames.clear();
 		
 		for(int i=0; i<2; i++) {
-			frames.add(new TextureRegion(getTexture(), 362 + i*153, 0, 46, 41));
+			frames.add(new TextureRegion(getTexture(), 362 + i*200, 0, 46, 41));
 		}
-		shipDamaged = new Animation(1f, frames);
+		shipDamaged = new Animation(0.25f, frames);
 	}
 	
 	public TextureRegion getFrame(float dt) {
@@ -182,6 +184,9 @@ public class Player extends Sprite{
 		switch(currentState) {
 		case DESTROYED:
 			region = (TextureRegion) shipDestroyed.getKeyFrame(stateTimer, true);
+			break;
+		case DAMAGED:
+			region = (TextureRegion) shipDamaged.getKeyFrame(stateTimer, true);
 			break;
 		case SWING_LEFT:
 			region = swing_left;
@@ -256,6 +261,7 @@ public class Player extends Sprite{
 	public void update(float dt) {
 		//Update Timer
 		movingTimer += dt;
+		elapsedInvicible += dt;
 		
 		if(moving)
 			movingVelocity = b2body.getLinearVelocity();
@@ -268,7 +274,7 @@ public class Player extends Sprite{
 		skillTree.update(skillTree.getRoot(), dt);
 		
 		//Grant Invicible when hit
-		if(damaged) {
+		if(damaged && !invicible) {
 			invicible = true;
 			elapsedInvicible = 0;
 		}
@@ -366,7 +372,9 @@ public class Player extends Sprite{
 					this.reversing = false;
 				}
 			}
-			
+			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+				
+			}
 			
 		}
 
@@ -492,5 +500,13 @@ public class Player extends Sprite{
 
 	public void setCriticalRate(int criticalRate) {
 		this.criticalRate = criticalRate;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 }
