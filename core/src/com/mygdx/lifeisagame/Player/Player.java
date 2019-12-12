@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
+import com.mygdx.lifeisagame.Player.SkillTree.SkillTree;
 
 public class Player extends Sprite{
 	//Properties
@@ -25,6 +26,7 @@ public class Player extends Sprite{
 	private int hitpoints; 
 	private boolean shooting;
 	private boolean damaged;
+	private SkillTree skillTree;
 	
 	//Movement properties
 	private double limitMovementSpeed;
@@ -108,10 +110,13 @@ public class Player extends Sprite{
 		
 		//Properties
 		hitpoints = 5;
+		damage = 5;
 		
 		generateAnimation();
 		
 		definePlayer();
+		
+		skillTree = new SkillTree(world, this);
 	}
 
 	public void defineHitBox() {
@@ -243,27 +248,10 @@ public class Player extends Sprite{
 		//Set Position
 		setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight() / 2);
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
-				
-		//bullet	
-		bulletTimer += dt;
-		rocketTimer += dt;
-		bulletPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y + 0.2f);
-		//System.out.println("bullet Position: "+bulletPosition.x + " " + bulletPosition.y);
-		for(BaseBullet bul : bullet) {
-			if(!bul.getDestroy()) {
-				bul.update(dt);
-			}
-		}
-		if(bulletTimer > 0.5f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.1f, bulletPosition.y),0, true));
-			//bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y - 0.3f)));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),15,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),-15,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),30,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),-30,true));
-			bulletTimer = 0;
-		}
+		
+		//Bullet
+		skillTree.update(skillTree.getRoot(), dt);
+		
 		/*if(rocketTimer > 1f) {
 			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0,false));
 			rocketTimer = 0;
@@ -392,5 +380,41 @@ public class Player extends Sprite{
 	}
 	public ArrayList<BaseBullet> getBullet(){
 		return bullet;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+	public Body getB2body() {
+		return b2body;
+	}
+
+	public void setB2body(Body b2body) {
+		this.b2body = b2body;
+	}
+
+	public float getBulletTimer() {
+		return bulletTimer;
+	}
+
+	public void setBulletTimer(float bulletTimer) {
+		this.bulletTimer = bulletTimer;
+	}
+
+	public Vector2 getBulletPosition() {
+		return bulletPosition;
+	}
+
+	public void setBulletPosition(Vector2 bulletPosition) {
+		this.bulletPosition = bulletPosition;
+	}
+
+	public void setBullet(ArrayList<BaseBullet> bullet) {
+		this.bullet = bullet;
 	}
 }
