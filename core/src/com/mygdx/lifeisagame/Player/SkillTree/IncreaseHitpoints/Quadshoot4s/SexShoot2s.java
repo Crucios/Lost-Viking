@@ -19,17 +19,18 @@ public class SexShoot2s extends Node{
 	
 	public SexShoot2s(int size, Player player, World world) {
 		super(size, player, world);
-		unlocked = true;
+		unlocked = false;
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;
+		bulletTimer= 3f;
 		textureRegion = new TextureRegion(texture, 0, 192, 135, 188);
 	}
 
 	@Override
 	public void update(float dt) {
 		if(unlocked) {
-			//bullet	
+			//bullet
 			bulletTimer += dt;
 			bulletPosition = new Vector2(b2bodyPlayer.getPosition().x, b2bodyPlayer.getPosition().y + 0.2f);
 			//System.out.println("bullet Position: "+bulletPosition.x + " " + bulletPosition.y);
@@ -39,12 +40,12 @@ public class SexShoot2s extends Node{
 				}
 			}
 			if(bulletTimer > 2f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.2f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.2f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.4f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.4f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.5f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.5f, bulletPosition.y),0,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.2f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.2f, bulletPosition.y),0,true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.4f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.4f, bulletPosition.y),0,true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.6f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.6f, bulletPosition.y),0,true,player));
 			bulletTimer = 0;
 			}
 		}

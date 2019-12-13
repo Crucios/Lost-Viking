@@ -36,9 +36,9 @@ public class TripleBullet extends Node{
 			}
 		}
 		if(bulletTimer > 0.5f) {
-		bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0, true));
-		bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.2f, bulletPosition.y),0, true));
-		bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.2f, bulletPosition.y),0, true));
+		bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0, true,player));
+		bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.2f, bulletPosition.y),0, true,player));
+		bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.2f, bulletPosition.y),0, true,player));
 		bulletTimer = 0;
 		}
 	}

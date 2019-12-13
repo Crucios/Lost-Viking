@@ -8,6 +8,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Enemy.EnemyBase;
+import com.mygdx.lifeisagame.Player.Player;
+
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,12 +22,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 public class BaseBullet extends Sprite {
 	public World world;
 	public Body b2body;
+	public Player player;
 	private TextureRegion bullet;
 	private Vector2 position;
 	private Vector2 nowPosition;
 	private float speed;
 	private float angle;
 	private int damage;
+	private int criticalRate;
 	private boolean isBullet;
 	private boolean isHit;
 	private boolean stop;
@@ -31,33 +37,46 @@ public class BaseBullet extends Sprite {
 	private boolean miss;
 	private boolean hasDamaged;
 	private EnemyBase enemy;
+	private Random rand;
 	
-	public BaseBullet(World world, Vector2 position,float angle,boolean isBullet) {
+	public BaseBullet(World world, Vector2 position,float angle,boolean isBullet,Player player) {
 		super(new AtlasRegion(new TextureAtlas("Item/bullet.pack").findRegion("bullet")));
 		this.world = world;		
 		this.destroy = false;
-		this.damage = 5;
+		this.player = player;
+		this.damage = player.getDamage();
+		this.criticalRate = player.getCriticalRate();
+		this.speed = player.getBulletSpeed();
 		this.isBullet = isBullet;
 		hasDamaged = false;
 		stop = true;
 		isHit = false;
 		this.angle = angle;
 		this.position = position;
+		rand = new Random();
 		bullet = new TextureRegion(getTexture(), 0,0,12,4);
 		setBounds(0,0,12 / LostViking.PPM,4 / LostViking.PPM);
 		definePistolBullet();
 	}
 	public void update(float dt) {
+		this.damage = player.getDamage();
+		this.criticalRate = player.getCriticalRate();
+		this.speed = player.getBulletSpeed();
 		setPosition(position.x - getWidth()/8,position.y - getHeight()/2);
 		if(angle > 0)
-			b2body.setLinearVelocity(angle / -15f, 6f);
+			b2body.setLinearVelocity(angle / -15f, speed);
 		else if(angle < 0)
-			b2body.setLinearVelocity(angle / -15f, 6f);
+			b2body.setLinearVelocity(angle / -15f, speed);
 		else{
 			b2body.setLinearVelocity(0, 6f);
 		}
-		if(hasDamaged) {
-			enemy.setHP(enemy.getHP() - damage);
+		if(hasDamaged) {			
+			if(rand.nextInt(100)< criticalRate) {
+				enemy.setHP(enemy.getHP() - damage * 2);
+			}
+			else {
+				enemy.setHP(enemy.getHP() - damage);
+			}
 			hasDamaged = false;
 		}
 		if(position.y > 17f && stop) {

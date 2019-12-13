@@ -59,6 +59,8 @@ public class GameScreen implements Screen{
 	//enemy
 	protected ArrayList<EnemyBase> enemy;
 	protected float enemyTimer;
+	protected float enemyBoxY;
+	protected float enemyBoxX;
 	protected Random rand;
 	protected ArrayList<BaseBullet> bullet;
 	
@@ -161,8 +163,33 @@ public class GameScreen implements Screen{
 				enemy.get(i).update(dt);
 				//Collision Detection
 				for(int j=0;j<bullet.size();j++) {
+					switch(enemy.get(i).getType()) {
+					case 0:
+						enemyBoxX = 0.46f;
+						enemyBoxY = 0.52f;
+						break;
+					case 1:
+						enemyBoxX = 0.36f;
+						enemyBoxY = 0.52f;
+						break;
+					case 2:
+						enemyBoxX = 0.70f;
+						enemyBoxY = 0.52f;
+						break;
+					case 3:
+						enemyBoxX = 0.36f;
+						enemyBoxY = 0.48f;
+						break;
+					case 4:
+						enemyBoxX = 0.36f;
+						enemyBoxY = 0.52f;
+						break;
+					}
 					if(!bullet.get(j).getDestroy()) {
-						if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + 0.24 && bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - 0.24 && bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + 0.5f&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - 0.12 && bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - 0.12) {
+						if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + enemyBoxY
+								&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
+								&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
+								&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
 							bullet.get(j).onHit(enemy.get(i));
 							System.out.println("hiting");
 							System.out.println("Enemy Position : " + enemy.get(i).getPosition());
@@ -176,6 +203,7 @@ public class GameScreen implements Screen{
 		}
 		//Update
 		hud.update(dt);
+	}
 	
 	public void handleInput(float dt) {
 		player.handleInput(dt);

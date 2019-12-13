@@ -9,6 +9,7 @@ public class IncreasedDamageEnhanced extends Node{
 
 	public IncreasedDamageEnhanced(int size, Player player, World world) {
 		super(size, player, world);
+		unlocked = true;
 		textureRegion = new TextureRegion(texture, 135, 383, 135, 188);
 	}
 
