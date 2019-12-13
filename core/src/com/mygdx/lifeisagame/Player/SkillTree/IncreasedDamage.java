@@ -7,7 +7,6 @@ import com.mygdx.lifeisagame.Player.Player;
 public class IncreasedDamage extends Node{
 	public IncreasedDamage(int size, Player player, World world) {
 		super(size, player, world);
-		unlocked = true;
 		textureRegion = new TextureRegion(texture, 272, 383, 135, 188);
 		updated = false;
 	}

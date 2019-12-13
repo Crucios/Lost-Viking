@@ -430,7 +430,7 @@ public class Player extends Sprite{
 				}
 				
 				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-					if(skill.getNodes().get(0) != null) {
+					if(skill.getNodes().get(1) != null) {
 						skill.getNodes().get(1).setUnlocked(true);
 						choosingSkill = false;
 						justChooseSkill = true;
@@ -440,7 +440,7 @@ public class Player extends Sprite{
 				
 				if(skill.getNodes().size() > 2) {
 					if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
-						if(skill.getNodes().get(0) != null) {
+						if(skill.getNodes().get(2) != null) {
 							skill.getNodes().get(2).setUnlocked(true);
 							choosingSkill = false;
 							justChooseSkill = true;
@@ -611,7 +611,8 @@ public class Player extends Sprite{
 
 	public void setJustChooseSkill(boolean justChooseSkill) {
 		this.justChooseSkill = justChooseSkill;
-
+	}
+	
 	public void setBulletSpeed(float bulletSpeed) {
 		this.bulletSpeed = bulletSpeed;
 	}

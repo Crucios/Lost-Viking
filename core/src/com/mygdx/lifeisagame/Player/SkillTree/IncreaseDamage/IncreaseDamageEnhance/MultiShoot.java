@@ -18,7 +18,6 @@ public class MultiShoot extends Node{
 	private World world;
 	public MultiShoot(int size, Player player, World world) {
 		super(size, player, world);
-		unlocked = true;
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;

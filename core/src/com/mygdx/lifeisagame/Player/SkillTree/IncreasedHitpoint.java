@@ -12,7 +12,6 @@ public class IncreasedHitpoint extends Node{
 	
 	public IncreasedHitpoint(int size, Player player, World world) {
 		super(size, player, world);
-		unlocked = false;
 		b2bodyPlayer = this.player.getB2body();
 		this.world = world;
 		textureRegion = new TextureRegion(texture, 0, 580, 135, 188);

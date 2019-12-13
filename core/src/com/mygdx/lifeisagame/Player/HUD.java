@@ -99,6 +99,9 @@ public class HUD implements Disposable{
 		score = player.getScore();
 		hitpoint = player.getHitpoints();
 		
+		scoreCountLabel.setText(String.format("%d", score));
+		hitpointCountLabel.setText(String.format("X   %d", hitpoint));
+		
 		if(player.isChoosingSkill() && !hasGenerated) {
 			boolean check = false;
 			
@@ -106,7 +109,7 @@ public class HUD implements Disposable{
 			table.top();
 			table.setFillParent(true);	
 			table.padTop(425);
-			table.padLeft(-200);
+			
 			
 			for(int i=0;i<player.getSkill().getNodes().size();i++) {
 				if(player.getSkill().getNodes().get(i) != null) {
@@ -117,10 +120,15 @@ public class HUD implements Disposable{
 					if(i == 0)
 						table.add(temp).expandX();
 					
-					if(i == 1 && player.getSkill().getNodes().size() < 3)
+					if(i == 1 && player.getSkill().getNodes().size() < 3) {
+						table.add(temp).expandX().padLeft(-300);
 						table.add(temp).expandX().padLeft(-500);
-					else if(i == 1 && player.getSkill().getNodes().size() >= 3)
+					}
+					else if(i == 1 && player.getSkill().getNodes().size() >= 3) {
+						table.padLeft(-200);
 						table.add(temp).expandX().padLeft(-400);
+					}
+						
 
 					if(i == 2)
 						table.add(temp).expandX().padLeft(-100);
