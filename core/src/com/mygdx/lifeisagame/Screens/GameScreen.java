@@ -176,6 +176,7 @@ public class GameScreen implements Screen{
 		}
 		//Update
 		hud.update(dt);
+	}
 	
 	public void handleInput(float dt) {
 		player.handleInput(dt);

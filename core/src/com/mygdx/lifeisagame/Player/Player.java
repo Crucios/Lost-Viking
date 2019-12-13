@@ -34,6 +34,7 @@ public class Player extends Sprite{
 	private int criticalRate;
 	private boolean chooseSkill;
 	private boolean choosingSkill;
+	private boolean justChooseSkill;
 	private Node skill;
 
 	private int currentScore;
@@ -119,6 +120,8 @@ public class Player extends Sprite{
 		movingVelocity = new Vector2(0,0);
 		
 		chooseSkill = false;
+		justChooseSkill = false;
+		choosingSkill = false;
 		
 		elapsedInvicible = 0;
 		
@@ -415,16 +418,31 @@ public class Player extends Sprite{
 			
 			if(choosingSkill) {
 				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
-					skill.getNodes().get(0).setUnlocked(true);
+					if(skill.getNodes().get(0) != null) {
+						skill.getNodes().get(0).setUnlocked(true);
+						choosingSkill = false;
+						justChooseSkill = true;
+						chooseSkill = false;
+					}
 				}
 				
 				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
-					skill.getNodes().get(1).setUnlocked(true);
+					if(skill.getNodes().get(0) != null) {
+						skill.getNodes().get(1).setUnlocked(true);
+						choosingSkill = false;
+						justChooseSkill = true;
+						chooseSkill = false;
+					}
 				}
 				
 				if(skill.getNodes().size() > 2) {
 					if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
-						skill.getNodes().get(2).setUnlocked(true);
+						if(skill.getNodes().get(0) != null) {
+							skill.getNodes().get(2).setUnlocked(true);
+							choosingSkill = false;
+							justChooseSkill = true;
+							chooseSkill = false;
+						}		
 					}
 				}
 				
@@ -582,5 +600,13 @@ public class Player extends Sprite{
 
 	public void setChoosingSkill(boolean choosingSkill) {
 		this.choosingSkill = choosingSkill;
+	}
+
+	public boolean isJustChooseSkill() {
+		return justChooseSkill;
+	}
+
+	public void setJustChooseSkill(boolean justChooseSkill) {
+		this.justChooseSkill = justChooseSkill;
 	}
 }

@@ -63,7 +63,7 @@ public class MainMenuScreen implements Screen {
 		int a =(LostViking.WIDTH-PLAY_BUTTON_WIDTH)/2;
 		int b =(LostViking.WIDTH-EXIT_BUTTON_WIDTH)/2;
 		//Play
-		if(Gdx.input.getX()<=440&&Gdx.input.getX()>=270&&Gdx.input.getY()<=620&&Gdx.input.getY()>=580)
+		if(Gdx.input.getX() <= 440 && Gdx.input.getX() >= 270 && Gdx.input.getY()<=620&&Gdx.input.getY()>=580)
 		{
 			game.batch.draw(playButtonActive, a,PLAY_BUTTON_Y,PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT);
 			if (Gdx.input.justTouched()) {

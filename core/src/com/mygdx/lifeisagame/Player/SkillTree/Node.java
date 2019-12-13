@@ -55,11 +55,13 @@ public class Node extends Sprite{
 		this.unlocked = unlocked;
 	}
 
-	public Texture getTexture() {
-		return texture;
+	public TextureRegion getTextureRegion() {
+		return textureRegion;
 	}
 
-	public void setTexture(Texture texture) {
-		this.texture = texture;
+	public void setTextureRegion(TextureRegion textureRegion) {
+		this.textureRegion = textureRegion;
 	}
+	
+	
 }

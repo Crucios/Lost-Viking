@@ -33,7 +33,7 @@ public class HUD implements Disposable{
 	private Image hitpointLabel;
 	private Label hitpointCountLabel;
 	
-	private Image scoreLabel;
+	private Label scoreLabel;
 	private Label scoreCountLabel;
 	
 	private ArrayList<Image> status;
@@ -46,10 +46,13 @@ public class HUD implements Disposable{
     //ViewPort
     private Viewport viewPort;
     
+    private boolean hasGenerated;
+    
 	public HUD(SpriteBatch sb, Player player){
 		this.player = player;
 		score = this.player.getScore();
 		hitpoint = this.player.getHitpoints();
+		hasGenerated = false;
 		
 		viewPort = new FitViewport(LostViking.V_WIDTH, LostViking.V_HEIGHT, new OrthographicCamera());
 		stage = new Stage(viewPort,sb);
@@ -69,37 +72,79 @@ public class HUD implements Disposable{
 		hitpointLabel.setDrawable(new TextureRegionDrawable(new TextureRegion(texture, 362, 0, 46, 41)));
 		hitpointLabel.setScale(3.75f,1.75f);
 		
-		hitpointCountLabel = new Label(String.format("%d", hitpoint), new Label.LabelStyle(font, Color.WHITE));
+		hitpointCountLabel = new Label(String.format("X   %d", hitpoint), new Label.LabelStyle(font, Color.WHITE));
 		hitpointCountLabel.setFontScaleX(1.75f);
 		
-		texture = new Texture(Gdx.files.internal("Player/HUD/score_icon.png"));
-		scoreLabel = new Image();
-		scoreLabel.setDrawable(new TextureRegionDrawable(new TextureRegion(texture, 27, 29, 146, 146)));
-		scoreLabel.setScale(1.25f, 0.5f);
+		scoreLabel = new Label("SCORE", new Label.LabelStyle(font, Color.WHITE));
+		scoreLabel.setFontScaleX(1.5f);
 		
 		scoreCountLabel = new Label(String.format("%d", score), new Label.LabelStyle(font, Color.WHITE));
 		scoreCountLabel.setFontScaleX(1.75f);
 		
 		addHUD();
-		
-		stage.addActor(table);
 	}
 	
 	public void addHUD() {
 		table.bottom();
 		table.setFillParent(true);
-		table.add(scoreLabel).expandX().padLeft(-500).padTop(-75);
-		table.add(scoreCountLabel).expandX().padLeft(-1800).padTop(10);
+		table.add(scoreLabel).expandX().padBottom(27);
+		table.add(scoreCountLabel).expandX().padBottom(27).padLeft(-300);
 		
-		table.row();
-		
-		table.add(hitpointLabel).expandX().padLeft(-575).padTop(30).padBottom(50);
-		table.add(hitpointCountLabel).expandX().padLeft(-1800).padTop(5).padBottom(50);
+		table.add(hitpointLabel).expandX().padLeft(500);
+		table.add(hitpointCountLabel).expandX().padTop(5).padLeft(-30).padBottom(35);
+		stage.addActor(table);
 	}
 	
 	public void update(float dt) {
-		score = this.player.getScore();
-		hitpoint = this.player.getHitpoints();
+		score = player.getScore();
+		hitpoint = player.getHitpoints();
+		
+		if(player.isChoosingSkill() && !hasGenerated) {
+			boolean check = false;
+			
+			table = new Table();
+			table.top();
+			table.setFillParent(true);	
+			table.padTop(425);
+			table.padLeft(-200);
+			
+			for(int i=0;i<player.getSkill().getNodes().size();i++) {
+				if(player.getSkill().getNodes().get(i) != null) {
+					Image temp = new Image();
+					temp.setDrawable(new TextureRegionDrawable(player.getSkill().getNodes().get(i).getTextureRegion()));
+					temp.setScale(2.75f, 1f);
+					
+					if(i == 0)
+						table.add(temp).expandX();
+					
+					if(i == 1 && player.getSkill().getNodes().size() < 3)
+						table.add(temp).expandX().padLeft(-500);
+					else if(i == 1 && player.getSkill().getNodes().size() >= 3)
+						table.add(temp).expandX().padLeft(-400);
+
+					if(i == 2)
+						table.add(temp).expandX().padLeft(-100);
+					
+					check = true;
+				}
+				
+			}
+			
+			if(check) {
+				stage.clear();
+				stage.addActor(table);
+			}
+			
+			hasGenerated = true;
+		}
+		
+		if(player.isJustChooseSkill()) {
+			stage.clear();
+			table = new Table();
+			addHUD();
+			player.setJustChooseSkill(false);
+			hasGenerated = false;
+		}
 	}
 	
 	@Override

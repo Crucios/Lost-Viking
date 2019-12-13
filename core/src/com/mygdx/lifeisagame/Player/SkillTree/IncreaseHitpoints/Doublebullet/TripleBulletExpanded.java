@@ -19,7 +19,7 @@ public class TripleBulletExpanded extends Node{
 	
 	public TripleBulletExpanded(int size, Player player, World world) {
 		super(size, player, world);
-		unlocked = true;
+		//unlocked = true;
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;

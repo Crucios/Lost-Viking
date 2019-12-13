@@ -19,7 +19,7 @@ public class SexShoot2s extends Node{
 	
 	public SexShoot2s(int size, Player player, World world) {
 		super(size, player, world);
-		unlocked = true;
+		//unlocked = true;
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;
