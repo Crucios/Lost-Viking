@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
+import com.mygdx.lifeisagame.Player.SkillTree.Node;
 import com.mygdx.lifeisagame.Player.SkillTree.SkillTree;
 
 public class Player extends Sprite{
@@ -31,6 +32,9 @@ public class Player extends Sprite{
 	private SkillTree skillTree;
 	private int dodgeRate;
 	private int criticalRate;
+	private boolean chooseSkill;
+	private boolean choosingSkill;
+	private Node skill;
 	
 	//Movement properties
 	private double limitMovementSpeed;
@@ -109,6 +113,8 @@ public class Player extends Sprite{
 		movementSpeed = 0.5f;
 		movingVelocity = new Vector2(0,0);
 		
+		chooseSkill = false;
+		
 		elapsedInvicible = 0;
 		
 		//bullet
@@ -128,6 +134,7 @@ public class Player extends Sprite{
 		definePlayer();
 		
 		skillTree = new SkillTree(world, this);
+		skill = skillTree.getLastSkill(skillTree.getRoot());
 	}
 
 	public void defineHitBox() {
@@ -263,6 +270,9 @@ public class Player extends Sprite{
 		movingTimer += dt;
 		elapsedInvicible += dt;
 		
+		//Update Last Skill
+		skill = skillTree.getLastSkill(skillTree.getRoot());
+		
 		if(moving)
 			movingVelocity = b2body.getLinearVelocity();
 		
@@ -372,7 +382,32 @@ public class Player extends Sprite{
 					this.reversing = false;
 				}
 			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			
+			if(chooseSkill) {
+				if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+					//Choose Skill, Pause
+					choosingSkill = true;
+				}
+			}
+			
+			if(Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+				chooseSkill = true;
+			}
+			
+			if(choosingSkill) {
+				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+					skill.getNodes().get(0).setUnlocked(true);
+				}
+				
+				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+					skill.getNodes().get(1).setUnlocked(true);
+				}
+				
+				if(skill.getNodes().size() > 2) {
+					if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+						skill.getNodes().get(2).setUnlocked(true);
+					}
+				}
 				
 			}
 			
@@ -508,5 +543,21 @@ public class Player extends Sprite{
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public Node getSkill() {
+		return skill;
+	}
+
+	public void setSkill(Node skill) {
+		this.skill = skill;
+	}
+
+	public boolean isChoosingSkill() {
+		return choosingSkill;
+	}
+
+	public void setChoosingSkill(boolean choosingSkill) {
+		this.choosingSkill = choosingSkill;
 	}
 }

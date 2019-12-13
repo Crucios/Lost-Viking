@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.DoubleBullet;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.QuadShoot2s;
-import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.QuadShoot4s;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Doublebullet.TripleBullet;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Doublebullet.TripleBulletExpanded;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Quadshoot4s.OctoShoot3s;
@@ -71,6 +70,24 @@ public class SkillTree{
 		node.update(dt);
 	}
 
+	public Node getLastSkill(Node node) {
+		boolean isUnlock = false;
+		Node temp = node;
+		for(int i=0; i<node.getNodes().size(); i++) {
+			if(node.getNodes().get(i) != null) {
+				if(node.getNodes().get(i).unlocked) {
+					isUnlock = true;
+					temp = getLastSkill(node.getNodes().get(i)); 
+				}
+			}
+		}
+		
+		if(!isUnlock)
+			return node;
+		else
+			return temp;
+	}
+	
 	public Node getRoot() {
 		return root;
 	}
