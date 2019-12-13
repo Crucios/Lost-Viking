@@ -1,9 +1,9 @@
 package com.mygdx.lifeisagame.Player;
 
 import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,6 +30,8 @@ public class Player extends Sprite{
 	private SkillTree skillTree;
 	private int dodgeRate;
 	private int criticalRate;
+	private int currentScore;
+	private int highscore;
 	
 	//Movement properties
 	private double limitMovementSpeed;
@@ -62,6 +64,7 @@ public class Player extends Sprite{
 	
 	Animation shipDestroyed;
 	Animation shipDamaged;
+	Preferences preferences = Gdx.app.getPreferences("My preferences");
 	
 	//For gameCam glitch in screen
 	private boolean camGlitched;
@@ -284,6 +287,20 @@ public class Player extends Sprite{
 		}*/
 		//Set Texture Region
 		setRegion(getFrame(dt));
+		
+		//Check dead or not
+		if(currentState==State.DESTROYED)
+		{
+		    int highscore = preferences.getInteger("High score",0);
+		    if(highscore<=currentScore)			
+		    {
+		    	// display yourCurrentScore
+		        preferences.putInteger("High score", currentScore);
+		        preferences.flush();
+		        this.highscore=preferences.getInteger("highscore",0);
+		    }
+		    else;	
+		}
 	}
 	
 	public void handleInput(float dt) {
@@ -374,6 +391,10 @@ public class Player extends Sprite{
 //		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
 	}
 	
+	public int getHighScore()
+	{
+		return highscore;
+	}
 	//Public Access Method
 	public boolean isCamGlitched() {
 		return camGlitched;
