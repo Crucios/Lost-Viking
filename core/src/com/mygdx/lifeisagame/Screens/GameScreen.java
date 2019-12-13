@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -66,6 +67,8 @@ public class GameScreen implements Screen{
 		this.game = game;
 		this.player = player;
 		this.world = world;
+		
+		hud = new HUD(game.batch, this.player);
 		
 		//Camera movement
 		gamecam = new OrthographicCamera();
@@ -172,21 +175,10 @@ public class GameScreen implements Screen{
 			}
 		}
 		//Update
-		//hud.update(dt);
-	}
+		hud.update(dt);
 	
 	public void handleInput(float dt) {
 		player.handleInput(dt);
-//		if(Gdx.input.isKeyPressed(Input.Keys.D))
-//			gamecam.position.x += 100 *dt;
-//		if(Gdx.input.isKeyPressed(Input.Keys.A))
-//			gamecam.position.x -= 100*dt;
-//		if(Gdx.input.isKeyPressed(Input.Keys.W))
-//			gamecam.position.y += 100*dt;
-//		if(Gdx.input.isKeyPressed(Input.Keys.S))
-//			gamecam.position.y -= 100*dt;
-		
-//		Gdx.app.log("Camera Position", gamecam.position.x + " " + gamecam.position.y);
 	}
 	
 	@Override
@@ -201,9 +193,7 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		renderer.render();
-		
-		//game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-		//hud.stage.draw();
+	
 		game.batch.setProjectionMatrix(gamecam.combined);		
 		game.batch.begin();
 		
@@ -217,6 +207,9 @@ public class GameScreen implements Screen{
 		}	
 		player.draw(game.batch);
 		game.batch.end();
+		
+		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+		hud.stage.draw();
 		
 		b2dr.render(world, gamecam.combined);
 	}
@@ -266,7 +259,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+		hud.dispose();
 	}
 
 }
