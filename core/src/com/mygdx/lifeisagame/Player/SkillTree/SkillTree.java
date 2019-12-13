@@ -27,6 +27,9 @@ public class SkillTree{
 		Node newNode = new Basic(3, this.player, this.world);
 		positionTree = new int[] {0};
 		add(newNode, positionTree);
+		newNode=new IncreasedHitpoint(2,this.player,this.world);
+		positionTree=new int[] {0};
+		add(newNode, positionTree);
 		newNode = new QuadShoot2s(2,this.player, this.world);
 		positionTree=new int[] {0,0};
 		add(newNode, positionTree);
