@@ -13,6 +13,7 @@ public class double_shoot extends EnemyBase {
 	public double_shoot(World world, Player player) {
 		super(world,player);
 		// TODO Auto-generated constructor stub
+		this.type = 2;
 		enemy = new TextureRegion(getTexture(), 175,500,165, 130);
 		enemy.flip(false, true);
 		setBounds(175,500,165 / LostViking.PPM*1.2f,130 / LostViking.PPM*1.2f);

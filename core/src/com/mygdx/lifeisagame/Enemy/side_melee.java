@@ -17,6 +17,7 @@ public class side_melee extends EnemyBase{
 		this.cekRight = rand.nextInt(2);
 		this.randomHeight = rand.nextInt(14) + rand.nextFloat();
 		this.XSpeed = rand.nextInt(5) + rand.nextFloat() + 2f;
+		this.type = 3;
 		// TODO Auto-generated constructor stub
 		if(cekRight == 1) {
 			this.position = new Vector2(0, randomHeight + 2);
@@ -60,6 +61,6 @@ public class side_melee extends EnemyBase{
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody; 
 		b2body = world.createBody(bdef);
-		defineHitBox(35,48);
+		defineHitBox(36,48);
 	}
 }

@@ -67,6 +67,7 @@ public class Player extends Sprite{
 	private ArrayList<BaseBullet> bullet;
 	private float bulletTimer;
 	private Vector2 bulletPosition;
+	private float bulletSpeed;
 	//Rocket
 	private float rocketTimer;
 	
@@ -117,6 +118,8 @@ public class Player extends Sprite{
 		movingTimer = 0;
 		limitMovementSpeed = 2;
 		movementSpeed = 0.5f;
+		criticalRate = 10;
+		bulletSpeed = 6f;
 		movingVelocity = new Vector2(0,0);
 		
 		chooseSkill = false;
@@ -608,5 +611,13 @@ public class Player extends Sprite{
 
 	public void setJustChooseSkill(boolean justChooseSkill) {
 		this.justChooseSkill = justChooseSkill;
+
+	public void setBulletSpeed(float bulletSpeed) {
+		this.bulletSpeed = bulletSpeed;
+	}
+	
+	public float getBulletSpeed() {
+		return bulletSpeed;
+
 	}
 }

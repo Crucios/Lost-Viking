@@ -37,14 +37,14 @@ public class OctoShoot3s extends Node{
 				}
 			}
 			if(bulletTimer > 3f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.1f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.3f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.3f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.5f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.5f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.7f, bulletPosition.y),0, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.7f, bulletPosition.y),0,true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.1f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.3f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.3f, bulletPosition.y),0,true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.5f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.5f, bulletPosition.y),0,true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.7f, bulletPosition.y),0, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.7f, bulletPosition.y),0,true,player));
 			bulletTimer = 0;
 			}
 		}	

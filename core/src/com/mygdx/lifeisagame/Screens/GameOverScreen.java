@@ -1,12 +1,19 @@
 package com.mygdx.lifeisagame.Screens;
 
+
+
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,27 +26,40 @@ import com.mygdx.lifeisagame.Player.Player;
 public class GameOverScreen implements Screen {
 	private static final int BUTTON_WIDTH=200;
 	private static final int BUTTON_HEIGHT=100;
-	private static final int SCORETEXT_Y=750;
-	private static final int RETRY_BUTTON_Y=500;
-	private static final int EXIT_BUTTON_Y=400;
+	private static final int HIGHSCORETEXT_Y=800;
+	private static final int SCORETEXT_Y=650;
+	private static final int RETRY_BUTTON_Y=450;
+	private static final int EXIT_BUTTON_Y=350;
+	 //Font
+    private FreeTypeFontGenerator fontGenerator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
+    private BitmapFont font;
+    private int highscore;
 	private Viewport viewPort;
 	private Stage stage;
 	private Player player;
 	private Music music;
 	LostViking game;
-	
 	Texture scoreText;
+	Texture highscoreText;
 	Texture retryButtonActive;
 	Texture retryButtonInactive;
 	Texture exitButtonActive;
 	Texture exitButtonInactive;
 	Texture backgroundGameOver;
+	
 	public GameOverScreen(LostViking game)
 	{
 		viewPort = new FitViewport(LostViking.WIDTH,LostViking.HEIGHT,new OrthographicCamera());
         stage = new Stage(viewPort, ((LostViking) game).batch);
 		this.game=game;
-		
+		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("GameOver/Starjedi.ttf"));
+        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 50;
+        fontParameter.color = Color.WHITE;
+        font = fontGenerator.generateFont(fontParameter);
+        
+		highscoreText=new Texture("GameOver/highscoreText.png");
 		scoreText=new Texture("GameOver/scoreText.png");
 		backgroundGameOver=new Texture("GameOver/gameover.png");
 		retryButtonActive= new Texture("Gameover/activeretry.png");
@@ -64,10 +84,14 @@ public class GameOverScreen implements Screen {
 		game.batch.begin();
 		game.batch.draw(backgroundGameOver,0,0,720,1280);
 		game.batch.draw(scoreText,a,SCORETEXT_Y,BUTTON_WIDTH,BUTTON_HEIGHT);
-		System.out.println("X : "+Gdx.input.getX());
-		System.out.println("Y : "+Gdx.input.getY());
+		game.batch.draw(highscoreText,a,HIGHSCORETEXT_Y,BUTTON_WIDTH,BUTTON_HEIGHT);
+		//highscore=this.player.getHighScore();
+		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-50 , 800);
+		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-50 , 630);
+//		System.out.println("X : "+Gdx.input.getX());
+//		System.out.println("Y : "+Gdx.input.getY());
 		//Retry
-		if(Gdx.input.getX()<=450&&Gdx.input.getX()>=265&&Gdx.input.getY()<=620&&Gdx.input.getY()>=580)
+		if(Gdx.input.getX()<=450&&Gdx.input.getX()>=265&&Gdx.input.getY()<=670&&Gdx.input.getY()>=630)
 		{
 			game.batch.draw(retryButtonActive, a,RETRY_BUTTON_Y,BUTTON_WIDTH,BUTTON_HEIGHT);
 			if (Gdx.input.justTouched()) {
@@ -84,7 +108,7 @@ public class GameOverScreen implements Screen {
 		}
 		
 		//Exit
-		if(Gdx.input.getX()<=430&&Gdx.input.getX()>=285&&Gdx.input.getY()<=695&&Gdx.input.getY()>=655)
+		if(Gdx.input.getX()<=430&&Gdx.input.getX()>=285&&Gdx.input.getY()<=745&&Gdx.input.getY()>=715)
 		{
 			game.batch.draw(exitButtonActive, a,EXIT_BUTTON_Y,BUTTON_WIDTH,BUTTON_HEIGHT);
 			if (Gdx.input.justTouched()) {

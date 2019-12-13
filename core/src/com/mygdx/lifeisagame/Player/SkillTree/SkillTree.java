@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.lifeisagame.Player.Player;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseDamage.IncreasedDamageEnhanced;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseDamage.Rocket2s;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseDamage.IncreaseDamageEnhance.MultiShoot;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseDamage.Rocket2sec.DoubleRocket3s;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseDamage.Rocket2sec.RocketEvery1s;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.DoubleBullet;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.QuadShoot2s;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Doublebullet.TripleBullet;
@@ -48,6 +53,24 @@ public class SkillTree{
 		newNode= new TripleBulletExpanded(1,this.player,this.world);
 		positionTree = new int[] {0,1,1};
 		add(newNode,positionTree);
+		newNode = new IncreasedDamage(2,this.player,this.world);
+		positionTree = new int[] {1};
+		add(newNode,positionTree);
+		newNode = new IncreasedDamageEnhanced(2,this.player,this.world);
+		positionTree = new int[] {1,0};
+		add(newNode,positionTree);
+		newNode = new Rocket2s(2,this.player, this.world);
+		positionTree = new int[] {1,1};
+		add(newNode, positionTree);
+		newNode = new MultiShoot(1,this.player, this.world);
+		positionTree = new int[] {1,0,0};
+		add(newNode, positionTree);
+		newNode = new RocketEvery1s(1,this.player, this.world);
+		positionTree = new int[] {1,1,1};
+		add(newNode, positionTree);
+		newNode = new DoubleRocket3s(1,this.player, this.world);
+		positionTree = new int[] {1,1,0};
+		add(newNode, positionTree);
 		//Declare Tree in here
 		
 	}

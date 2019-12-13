@@ -8,6 +8,7 @@ public class IncreasedSpeed extends Node{
 
 	public IncreasedSpeed(int size, Player player, World world) {
 		super(size, player, world);
+		unlocked = false;
 		textureRegion = new TextureRegion(texture, 272, 580, 135,188);
 	}
 

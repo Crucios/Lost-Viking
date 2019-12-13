@@ -19,7 +19,7 @@ public class TripleBulletExpanded extends Node{
 	
 	public TripleBulletExpanded(int size, Player player, World world) {
 		super(size, player, world);
-		//unlocked = true;
+
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;
@@ -36,9 +36,9 @@ public class TripleBulletExpanded extends Node{
 			}
 		}
 		if(bulletTimer > 0.5f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.2f, bulletPosition.y),-15, true));
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.2f, bulletPosition.y),15, true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.1f, bulletPosition.y),0,true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x + 0.2f, bulletPosition.y),-15, true,player));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x - 0.2f, bulletPosition.y),15, true,player));
 		bulletTimer = 0;
 		}
 	}

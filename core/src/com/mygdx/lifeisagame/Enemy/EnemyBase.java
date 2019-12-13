@@ -34,6 +34,7 @@ public abstract class EnemyBase extends Sprite {
 	protected int damage;
 	protected int hitPoint;
 	protected int score;
+	protected int type;
 	protected boolean isHit;
 	protected boolean stop;
 	protected boolean destroy;
@@ -137,5 +138,8 @@ public abstract class EnemyBase extends Sprite {
 	}
     public void setHP(int hp) {
         hitPoint = hp;
+    }
+    public int getType() {
+    	return type;
     }
 }

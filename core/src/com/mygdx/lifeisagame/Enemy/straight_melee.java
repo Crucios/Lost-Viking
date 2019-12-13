@@ -12,6 +12,7 @@ public class straight_melee extends EnemyBase {
 	public straight_melee(World world,Player player) {
 		super(world,player);
 		// TODO Auto-generated constructor stub	
+		this.type = 0;
 		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
 		enemy.flip(false, true);
 		setBounds(32,36,89 / LostViking.PPM *1.5f,89 / LostViking.PPM * 1.5f);
@@ -43,6 +44,6 @@ public class straight_melee extends EnemyBase {
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(45,52);
+		defineHitBox(46,52);
 	}
 }

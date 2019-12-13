@@ -38,7 +38,7 @@ public class Basic extends Node{
 				}
 			}
 			if(bulletTimer > 0.5f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0, true));
+			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0, true,player));
 			bulletTimer = 0;
 			}		
 		}

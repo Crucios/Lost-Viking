@@ -20,7 +20,6 @@ public class LostViking extends Game {
 	public static final float PPM = 100;	//PixelPerMeter
 	public static final int MAX_MAP_SIZE = 10000;
 	public SpriteBatch batch;
-	
 	public static AssetManager manager;
 	
 	@Override

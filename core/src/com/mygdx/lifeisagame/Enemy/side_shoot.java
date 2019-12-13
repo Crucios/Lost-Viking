@@ -13,6 +13,7 @@ public class side_shoot extends EnemyBase {
 	public side_shoot(World world, Player player) {
 		super(world, player);
 		// TODO Auto-generated constructor stub
+		this.type = 4;
 		enemy = new TextureRegion(getTexture(), 36,211,89, 89);
 		enemy.flip(false, true);
 		setBounds(36,211,89 / LostViking.PPM * 1.3f,89 / LostViking.PPM * 1.3f);
@@ -56,7 +57,7 @@ public class side_shoot extends EnemyBase {
 		bdef.position.set(position.x,position.y);
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(35,52);
+		defineHitBox(36,52);
 	}
 
 }
