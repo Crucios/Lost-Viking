@@ -41,6 +41,7 @@ public class Player extends Sprite{
 	private Node skill;
 	private boolean setToDestroy;
 	private Sound sound;
+	private Sound skillsound;
 
 	private int currentScore;
 	private int highscore;
@@ -113,6 +114,7 @@ public class Player extends Sprite{
 		this.world = world;
 		this.position = position;
 		sound=Gdx.audio.newSound(Gdx.files.internal("Player/Explosion.mp3"));
+		skillsound=Gdx.audio.newSound(Gdx.files.internal("Player/Skill Unlock.mp3"));
 		//Initialization
 		camGlitched = false;
 		shooting = false;
@@ -348,17 +350,20 @@ public class Player extends Sprite{
 		    hasDestroyed = true;
 		}
 		
-		if(score > 300 && !checkScore.get(0)) {
+		if(score >= 300 && !checkScore.get(0)) {
 			chooseSkill = true;
 			checkScore.set(0, true);
+			skillsound.play(0.5f);
 		}
-		else if(score > 500 && !checkScore.get(1)) {
+		else if(score >= 500 && !checkScore.get(1)) {
 			chooseSkill = true;
 			checkScore.set(1, true);
+			skillsound.play(0.5f);
 		}
-		else if(score > 700 && !checkScore.get(2)) {
+		else if(score >= 700 && !checkScore.get(2)) {
 			chooseSkill = true;
 			checkScore.set(2, true);
+			skillsound.play(0.5f);
 		}
 	}
 	
