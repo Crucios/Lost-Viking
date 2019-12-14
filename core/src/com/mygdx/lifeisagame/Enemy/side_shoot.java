@@ -38,7 +38,7 @@ public class side_shoot extends EnemyBase {
 				bul.update(dt);
 			}
 		}
-		if(bulletTimer > 0.5f && hitPoint > 2) {
+		if(bulletTimer > 1.5f && hitPoint > 2) {
 			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),-60));
 			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),60));
 			bulletTimer = 0;

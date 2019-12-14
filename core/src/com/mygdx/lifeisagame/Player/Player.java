@@ -37,6 +37,7 @@ public class Player extends Sprite{
 	private boolean choosingSkill;
 	private boolean justChooseSkill;
 	private Node skill;
+	private boolean setToDestroy;
 
 	private int currentScore;
 	private int highscore;
@@ -92,6 +93,7 @@ public class Player extends Sprite{
 	
 	//Elapsed Time Player
 	private float elapsedInvicible;
+	private float elapsedDestroyed;
 	
 	//Animation
 	//State Player
@@ -99,6 +101,7 @@ public class Player extends Sprite{
 	public State currentState;
 	public State previousState;
 	private float stateTimer;
+	private boolean hasDestroyed;
 	
 	public Player(World world, Vector2 position){
 		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Alternative Player")));
@@ -130,6 +133,9 @@ public class Player extends Sprite{
 		choosingSkill = false;
 		
 		elapsedInvicible = 0;
+		elapsedDestroyed = 0;
+		setToDestroy = false;
+		hasDestroyed = false;
 		
 		//bullet
 		piercing = false;
@@ -284,6 +290,7 @@ public class Player extends Sprite{
 		//Update Timer
 		movingTimer += dt;
 		elapsedInvicible += dt;
+		elapsedDestroyed += dt;
 		
 		//Update Last Skill
 		skill = skillTree.getLastSkill(skillTree.getRoot());
@@ -313,9 +320,15 @@ public class Player extends Sprite{
 		setRegion(getFrame(dt));
 		
 		//Check dead or not
-		if(currentState==State.DESTROYED)
+		if(currentState==State.DESTROYED && !setToDestroy)
 		{
-		    int highscore = preferences.getInteger("High score",0);
+			elapsedDestroyed = 0;
+		    setToDestroy = true;
+		    b2body.setLinearVelocity(new Vector2(0, 0));
+		}
+		
+		if(setToDestroy && elapsedDestroyed > 2 && !hasDestroyed) {
+			int highscore = preferences.getInteger("High score",0);
 		    if(highscore<=currentScore)			
 		    {
 		    	// display yourCurrentScore
@@ -323,7 +336,7 @@ public class Player extends Sprite{
 		        preferences.flush();
 		        this.highscore=preferences.getInteger("highscore",0);
 		    }
-		    else;	
+		    hasDestroyed = true;
 		}
 	}
 	
@@ -452,10 +465,10 @@ public class Player extends Sprite{
 			}
 			
 		}
-		System.out.println(Gdx.input.getX()/LostViking.PPM + " " + -Gdx.input.getY()/LostViking.PPM);
-		if(Gdx.input.getX()/LostViking.PPM*1.9f - 2f> 0.5f && Gdx.input.getX()/LostViking.PPM*1.9f - 2f < 9.5f && -Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f > 0.5 &&-Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f < 16.5) {
-			b2body.setTransform(new Vector2(Gdx.input.getX()/LostViking.PPM*1.9f - 2f,-Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f),0);
-		}
+//		System.out.println(Gdx.input.getX()/LostViking.PPM + " " + -Gdx.input.getY()/LostViking.PPM);
+//		if(Gdx.input.getX()/LostViking.PPM*1.9f - 2f> 0.5f && Gdx.input.getX()/LostViking.PPM*1.9f - 2f < 9.5f && -Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f > 0.5 &&-Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f < 16.5) {
+//			b2body.setTransform(new Vector2(Gdx.input.getX()/LostViking.PPM*1.9f - 2f,-Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f),0);
+//		}
 //		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
 //		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
 	}
@@ -645,5 +658,13 @@ public class Player extends Sprite{
 	}
 	public void setPiercing(boolean isPiercing) {
 		piercing = isPiercing;
+	}
+
+	public boolean isHasDestroyed() {
+		return hasDestroyed;
+	}
+
+	public void setHasDestroyed(boolean hasDestroyed) {
+		this.hasDestroyed = hasDestroyed;
 	}
 }

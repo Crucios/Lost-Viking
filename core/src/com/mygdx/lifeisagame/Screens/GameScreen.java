@@ -113,10 +113,9 @@ public class GameScreen implements Screen{
 	
 	public void update(float dt) {
 		handleInput(dt);
-		world.step(1/60f, 6, 2);
-		player.update(dt);
-		gamecam.update();
-		renderer.setView(gamecam);
+		if(player.isHasDestroyed()) {
+			game.setScreen(new GameOverScreen(game));
+		}
 		if(!player.isChoosingSkill()) {
 			world.step(1/60f, 6, 2);
 			player.update(dt);
@@ -136,36 +135,23 @@ public class GameScreen implements Screen{
 					mapAnimation.get(i).update(dt);
 			}
 		
-			for(int i=0; i<mapAnimation.size(); i++) {
-				if(mapAnimation.get(i).isDisposed()) {
-					boolean rotate = false;
-					if(!mapAnimation.get(i).isRotate())
-						rotate = true;
-					
-					mapAnimation.remove(i);
-					mapAnimation.add(new Map(new Vector2(0, 1712), rotate));
-				}
-				else
-					mapAnimation.get(i).update(dt);
-			}
 			bullet = player.getBullet();
 			enemyTimer += dt;
-			for(EnemyBase ene : enemy) {
-				if(!ene.getDestroy()) {
-					ene.update(dt);
+			for(int i=0;i<enemy.size();i++) {
+				enemyBullet = enemy.get(i).getEnemyBullet();
+				if(!enemy.get(i).getDestroy()) {
+					enemy.get(i).update(dt);
 				}
-			}
-			for(EnemyBase ene : enemy) {
-				if(!ene.getDestroy()) {
-					ene.update(dt);
-				}
-				enemyBullet = ene.getEnemyBullet();
-				for(BaseProjectiles eBullet : enemyBullet) {
-					if(!eBullet.getDestroy()) {
-						eBullet.update(dt);
+				else
+					enemy.remove(i);
+			
+				for(int j=0;j<enemyBullet.size();j++) {
+					if(!enemyBullet.get(j).getDestroy()) {
+					enemyBullet.get(j).update(dt);
 					}
 				}
 			}
+			
 			if(enemyTimer > 3f) {
 				int enemyRandom = rand.nextInt(6);
 				if(enemyRandom == 1) {
@@ -235,8 +221,12 @@ public class GameScreen implements Screen{
 								bullet.get(j).onHit(enemy.get(i));
 							}
 						}
+						else
+							bullet.remove(j);
 					}
 				}
+				else
+					enemy.remove(i);
 			}
 			for(int i = 0;i<enemy.size();i++) {
 				if(!enemy.get(i).getDestroy()) {			
@@ -256,9 +246,9 @@ public class GameScreen implements Screen{
 					
 				}
 			}
-			//Update
-			hud.update(dt);
 		}
+		//Update
+		hud.update(dt);
 	}
 	
 	public void handleInput(float dt) {
@@ -284,22 +274,32 @@ public class GameScreen implements Screen{
 		for(int i=0;i<mapAnimation.size();i++) {
 			mapAnimation.get(i).draw(game.batch);
 		}
-		for(EnemyBase ene : enemy) {
-			if(!ene.getDestroy()) {
-				ene.draw(game.batch);
+		
+		for(int i=0; i<enemy.size();i++) {
+			enemyBullet = enemy.get(i).getEnemyBullet();
+			if(!enemy.get(i).getDestroy()) {
+				enemy.get(i).draw(game.batch);
 			}
-			enemyBullet = ene.getEnemyBullet();
-			for(BaseProjectiles eBullet : enemyBullet) {
-				if(!eBullet.getDestroy()) {
-					eBullet.draw(game.batch);
+			else
+				enemy.remove(i);
+			
+			for(int j=0;j<enemyBullet.size();j++) {
+				if(!enemyBullet.get(j).getDestroy()) {
+					enemyBullet.get(j).draw(game.batch);
 				}
+				else
+					enemyBullet.remove(j);
 			}
 		}
-		for(BaseBullet bul : player.getBullet()) {
-			if(!bul.getDestroy()) {
-				bul.draw(game.batch);
+		
+		for(int i=0;i<player.getBullet().size();i++) {
+			if(!player.getBullet().get(i).getDestroy()) {
+				player.getBullet().get(i).draw(game.batch);
 			}
+			else
+				player.getBullet().remove(i);
 		}
+		
 		player.draw(game.batch);
 		game.batch.end();
 		
