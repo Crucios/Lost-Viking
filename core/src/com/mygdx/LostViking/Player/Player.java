@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -310,7 +311,8 @@ public class Player extends Sprite{
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
 		
 		//Bullet
-		skillTree.update(skillTree.getRoot(), dt);
+		if(currentState != State.DESTROYED)
+			skillTree.update(skillTree.getRoot(), dt);
 		
 		//Grant Invicible when hit
 		if(damaged && !invicible) {
@@ -685,6 +687,14 @@ public class Player extends Sprite{
 		this.hasDestroyed = hasDestroyed;
 	}
 
+	public boolean isSetToDestroy() {
+		return setToDestroy;
+	}
+
+	public void setSetToDestroy(boolean setToDestroy) {
+		this.setToDestroy = setToDestroy;
+	}
+	
 	public boolean isChooseSkill() {
 		return chooseSkill;
 	}

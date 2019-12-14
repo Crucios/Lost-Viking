@@ -14,6 +14,8 @@ public class straight_melee extends EnemyBase {
 		// TODO Auto-generated constructor stub	
 		this.type = 0;
 		score = 5;
+		speed = -3.5f;
+		hitPoint = 15;
 		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
 		enemy.flip(false, true);
 		setBounds(32,36,89 / LostViking.PPM *1.5f,89 / LostViking.PPM * 1.5f);
@@ -26,13 +28,14 @@ public class straight_melee extends EnemyBase {
 		if((position.y < -0.5f || position.x > 10) && stop) {
 			isHit = true;	
 		}
-		if(hitPoint <= 0) {
+		if(hitPoint <= 0 && hasScore) {
+        	player.setScore(player.getScore() + score);
         	isHit = true;
+        	hasScore = false;
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
 		if(isHit) {
-			player.setScore(player.getScore() + score);
 			world.destroyBody(b2body);
 			destroy = true;
 			isHit = false;

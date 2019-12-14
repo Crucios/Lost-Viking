@@ -17,6 +17,8 @@ public class double_shoot extends EnemyBase {
 		this.type = 2;
 		enemy = new TextureRegion(getTexture(), 175,500,165, 130);
 		enemy.flip(false, true);
+		hitPoint = 16;
+		speed = -1.3f;
 		setBounds(175,500,165 / LostViking.PPM*1.2f,130 / LostViking.PPM*1.2f);
 		definePistolBullet();
 	}
@@ -27,8 +29,10 @@ public class double_shoot extends EnemyBase {
 		if(position.y < -0.5f && stop) {
 			isHit = true;	
 		}
-		if(hitPoint <= 0) {
+		if(hitPoint <= 0 && hasScore) {
+        	player.setScore(player.getScore() + score);
         	isHit = true;
+        	hasScore = false;
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
@@ -45,7 +49,6 @@ public class double_shoot extends EnemyBase {
 			bulletTimer = 0;
 		}
 		if(isHit) {
-			player.setScore(player.getScore() + score);
 			world.destroyBody(b2body);
 			destroy = true;
 			isHit = false;

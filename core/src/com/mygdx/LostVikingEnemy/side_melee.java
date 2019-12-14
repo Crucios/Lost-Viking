@@ -19,6 +19,8 @@ public class side_melee extends EnemyBase{
 		this.randomHeight = rand.nextInt(14) + rand.nextFloat();
 		this.XSpeed = rand.nextInt(5) + rand.nextFloat() + 2f;
 		this.type = 3;
+		hitPoint = 6;
+		speed = -4f;
 		// TODO Auto-generated constructor stub
 		if(cekRight == 1) {
 			this.position = new Vector2(0, randomHeight + 2);
@@ -43,13 +45,14 @@ public class side_melee extends EnemyBase{
 		if((position.y < -0.5f || position.x > 10.5f || position.x < 0) && stop) {
 			isHit = true;	
 		}
-		if(hitPoint <= 0) {
+		if(hitPoint <= 0 && hasScore) {
+        	player.setScore(player.getScore() + score);
         	isHit = true;
+        	hasScore = false;
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
 		if(isHit) {
-			player.setScore(player.getScore() + score);
 			world.destroyBody(b2body);
 			destroy = true;
 			isHit = false;
