@@ -111,96 +111,100 @@ public class GameScreen implements Screen{
 	
 	public void update(float dt) {
 		handleInput(dt);
-		world.step(1/60f, 6, 2);
-		player.update(dt);
-		gamecam.update();
-		renderer.setView(gamecam);
 		
-		for(int i=0; i<mapAnimation.size(); i++) {
-			if(mapAnimation.get(i).isDisposed()) {
-				boolean rotate = false;
-				if(!mapAnimation.get(i).isRotate())
-					rotate = true;
-				
-				mapAnimation.remove(i);
-				mapAnimation.add(new Map(new Vector2(0, 1712), rotate));
+		if(!player.isChoosingSkill()) {
+			world.step(1/60f, 6, 2);
+			player.update(dt);
+			gamecam.update();
+			renderer.setView(gamecam);
+			
+			for(int i=0; i<mapAnimation.size(); i++) {
+				if(mapAnimation.get(i).isDisposed()) {
+					boolean rotate = false;
+					if(!mapAnimation.get(i).isRotate())
+						rotate = true;
+					
+					mapAnimation.remove(i);
+					mapAnimation.add(new Map(new Vector2(0, 1712), rotate));
+				}
+				else
+					mapAnimation.get(i).update(dt);
 			}
-			else
-				mapAnimation.get(i).update(dt);
-		}
-		bullet = player.getBullet();
-		enemyTimer += dt;
-		for(EnemyBase ene : enemy) {
-			if(!ene.getDestroy()) {
-				ene.update(dt);
+			bullet = player.getBullet();
+			enemyTimer += dt;
+			for(EnemyBase ene : enemy) {
+				if(!ene.getDestroy()) {
+					ene.update(dt);
+				}
 			}
-		}
-		if(enemyTimer > 2f) {
-			int enemyRandom = rand.nextInt(6);
-			if(enemyRandom == 1) {
-				enemy.add(new straight_melee(world,player));
-				enemyTimer = 0;
+			if(enemyTimer > 2f) {
+				int enemyRandom = rand.nextInt(6);
+				if(enemyRandom == 1) {
+					enemy.add(new straight_melee(world,player));
+					enemyTimer = 0;
+				}
+				else if(enemyRandom == 2) {
+					enemy.add(new straight_shoot(world,player));
+					enemyTimer = 0;
+				}
+				else if(enemyRandom == 3) {
+					enemy.add(new side_shoot(world,player));
+					enemyTimer = 0;
+				}
+				else if(enemyRandom == 4) {
+					enemy.add(new double_shoot(world,player));
+					enemyTimer = 0;
+				}
+				else if(enemyRandom == 5) {
+					enemy.add(new side_melee(world,player));
+					enemyTimer = 0;
+				}
 			}
-			else if(enemyRandom == 2) {
-				enemy.add(new straight_shoot(world,player));
-				enemyTimer = 0;
-			}
-			else if(enemyRandom == 3) {
-				enemy.add(new side_shoot(world,player));
-				enemyTimer = 0;
-			}
-			else if(enemyRandom == 4) {
-				enemy.add(new double_shoot(world,player));
-				enemyTimer = 0;
-			}
-			else if(enemyRandom == 5) {
-				enemy.add(new side_melee(world,player));
-				enemyTimer = 0;
-			}
-		}
-		for(int i = 0;i<enemy.size();i++) {
-			if(!enemy.get(i).getDestroy()) {
-				enemy.get(i).update(dt);
-				//Collision Detection
-				for(int j=0;j<bullet.size();j++) {
-					switch(enemy.get(i).getType()) {
-					case 0:
-						enemyBoxX = 0.46f;
-						enemyBoxY = 0.52f;
-						break;
-					case 1:
-						enemyBoxX = 0.36f;
-						enemyBoxY = 0.52f;
-						break;
-					case 2:
-						enemyBoxX = 0.70f;
-						enemyBoxY = 0.52f;
-						break;
-					case 3:
-						enemyBoxX = 0.36f;
-						enemyBoxY = 0.48f;
-						break;
-					case 4:
-						enemyBoxX = 0.36f;
-						enemyBoxY = 0.52f;
-						break;
-					}
-					if(!bullet.get(j).getDestroy()) {
-						if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + enemyBoxY
-								&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
-								&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
-								&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
-							bullet.get(j).onHit(enemy.get(i));
-							System.out.println("hiting");
+			for(int i = 0;i<enemy.size();i++) {
+				if(!enemy.get(i).getDestroy()) {
+					enemy.get(i).update(dt);
+					//Collision Detection
+					for(int j=0;j<bullet.size();j++) {
+						switch(enemy.get(i).getType()) {
+						case 0:
+							enemyBoxX = 0.46f;
+							enemyBoxY = 0.52f;
+							break;
+						case 1:
+							enemyBoxX = 0.36f;
+							enemyBoxY = 0.52f;
+							break;
+						case 2:
+							enemyBoxX = 0.70f;
+							enemyBoxY = 0.52f;
+							break;
+						case 3:
+							enemyBoxX = 0.36f;
+							enemyBoxY = 0.48f;
+							break;
+						case 4:
+							enemyBoxX = 0.36f;
+							enemyBoxY = 0.52f;
+							break;
+						}
+						if(!bullet.get(j).getDestroy()) {
+							if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + enemyBoxY
+									&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
+									&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
+									&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
+								bullet.get(j).onHit(enemy.get(i));
+								System.out.println("hiting");
+								System.out.println("Enemy Position : " + enemy.get(i).getPosition());
+								System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
+							}
 							System.out.println("Enemy Position : " + enemy.get(i).getPosition());
 							System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
 						}
-						System.out.println("Enemy Position : " + enemy.get(i).getPosition());
-						System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
 					}
 				}
 			}
 		}
+		
 		//Update
 		hud.update(dt);
 	}

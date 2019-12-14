@@ -44,6 +44,7 @@ public class double_shoot extends EnemyBase {
 			bulletTimer = 0;
 		}
 		if(isHit) {
+			player.setScore(player.getScore() + score);
 			world.destroyBody(b2body);
 			destroy = true;
 			isHit = false;

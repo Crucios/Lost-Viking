@@ -51,6 +51,7 @@ public abstract class EnemyBase extends Sprite {
 		this.speed = -1.5f;
 		this.player = player;
 		hasDamaged = false;
+		score = 0;
 		bulletTimer = 2;
 		stop = true;
 		isHit = false;
@@ -97,7 +98,7 @@ public abstract class EnemyBase extends Sprite {
 		fdef.friction = 0.0f;
 		fdef.isSensor = true;
 		b2body.createFixture(fdef);
-		b2body.createFixture(fdef).setUserData("enemy");
+		b2body.createFixture(fdef).setUserData(this);
 	}
 	
 	public void definePistolBullet() {
@@ -114,6 +115,7 @@ public abstract class EnemyBase extends Sprite {
 	public void onHit() {
 		isHit = true;
 	}
+	
 	public ArrayList<BaseProjectiles> getEnemyBullet(){
 		return enemyBullet;
 	}

@@ -126,12 +126,12 @@ public class HUD implements Disposable{
 					}
 					else if(i == 1 && player.getSkill().getNodes().size() >= 3) {
 						table.padLeft(-200);
-						table.add(temp).expandX().padLeft(-400);
+						table.add(temp).expandX().padLeft(-900);
 					}
 						
 
 					if(i == 2)
-						table.add(temp).expandX().padLeft(-100);
+						table.add(temp).expandX().padLeft(-900);
 					
 					check = true;
 				}
