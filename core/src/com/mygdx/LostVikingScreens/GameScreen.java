@@ -121,6 +121,7 @@ public class GameScreen implements Screen{
 	public void update(float dt) {
 		handleInput(dt);
 		if(player.isHasDestroyed()) {
+			music.stop();
 			game.setScreen(new GameOverScreen(game,player));
 		}
 		if(!player.isChoosingSkill()) {
@@ -188,6 +189,7 @@ public class GameScreen implements Screen{
 				}
 			}
 			for(int i = 0;i<enemy.size();i++) {
+				enemyBullet = enemy.get(i).getEnemyBullet();
 				if(!enemy.get(i).getDestroy()) {
 					enemy.get(i).update(dt);
 					switch(enemy.get(i).getType()) {
@@ -230,9 +232,7 @@ public class GameScreen implements Screen{
 									&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
 									&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
 									&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
-								if{
 									bullet.get(j).onHit(enemy.get(i));
-								}
 							}
 						}
 						else
@@ -241,26 +241,22 @@ public class GameScreen implements Screen{
 				}
 				else
 					enemy.remove(i);
-			}
-			for(int i = 0;i<enemy.size();i++) {
-				if(!enemy.get(i).getDestroy()) {			
-					enemyBullet = enemy.get(i).getEnemyBullet();
-					//Collision Detection
-					for(int j = 0;j<enemyBullet.size();j++) {
-	//					System.out.println("Enemy Bullet : " + enemyBullet.get(j).getPosition());
-	//					System.out.println("Player position: " + player.getNowPosition());
-						if(enemyBullet.get(j).getPosition().y < player.getNowPosition().y + 0.7f
-								&& enemyBullet.get(j).getPosition().y > player.getNowPosition().y - 0.7f
-								&& enemyBullet.get(j).getPosition().x < player.getNowPosition().x + 0.4f
-								&& enemyBullet.get(j).getPosition().x > player.getNowPosition().x - 0.4f) {
-							if(rand.nextInt(100) > player.getDodgeRate()) {
-								enemyBullet.get(j).onHit(player);
-							}
+				
+				
+				//Collision Detection
+				for(int j = 0;j<enemyBullet.size();j++) {
+	//				System.out.println("Enemy Bullet : " + enemyBullet.get(j).getPosition());
+	//				System.out.println("Player position: " + player.getNowPosition());
+					if(enemyBullet.get(j).getPosition().y < player.getNowPosition().y + 0.7f
+							&& enemyBullet.get(j).getPosition().y > player.getNowPosition().y - 0.7f
+							&& enemyBullet.get(j).getPosition().x < player.getNowPosition().x + 0.4f
+							&& enemyBullet.get(j).getPosition().x > player.getNowPosition().x - 0.4f) {
+						if(rand.nextInt(100) > player.getDodgeRate()) {
+							enemyBullet.get(j).onHit(player);
+						}
 							
 						}
-					}
-					
-				}
+				}	
 			}
 		}
 		//Update
@@ -323,7 +319,7 @@ public class GameScreen implements Screen{
 		
 		hud.stage.draw();
 		
-		//b2dr.render(world, gamecam.combined);
+		b2dr.render(world, gamecam.combined);
 	}
 
 	@Override
