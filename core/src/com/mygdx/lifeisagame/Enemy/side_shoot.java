@@ -14,6 +14,7 @@ public class side_shoot extends EnemyBase {
 		super(world, player);
 		// TODO Auto-generated constructor stub
 		this.type = 4;
+		score = 30;
 		enemy = new TextureRegion(getTexture(), 36,211,89, 89);
 		enemy.flip(false, true);
 		setBounds(36,211,89 / LostViking.PPM * 1.3f,89 / LostViking.PPM * 1.3f);

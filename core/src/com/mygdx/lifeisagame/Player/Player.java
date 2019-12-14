@@ -149,6 +149,7 @@ public class Player extends Sprite{
 		dodgeRate = 0;
 		criticalRate = 0;
 		score = 0;
+		highscore=0;
 		
 		generateAnimation();
 		
@@ -328,14 +329,11 @@ public class Player extends Sprite{
 		}
 		
 		if(setToDestroy && elapsedDestroyed > 2 && !hasDestroyed) {
-			int highscore = preferences.getInteger("High score",0);
-		    if(highscore<=currentScore)			
-		    {
-		    	// display yourCurrentScore
-		        preferences.putInteger("High score", currentScore);
-		        preferences.flush();
-		        this.highscore=preferences.getInteger("highscore",0);
+			 if (currentScore > highscore) {
+		            preferences.putInteger("highscore", highscore);
+		            preferences.flush();
 		    }
+			 highscore = preferences.getInteger("highscore");
 		    hasDestroyed = true;
 		}
 	}

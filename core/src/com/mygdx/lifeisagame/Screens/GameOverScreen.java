@@ -3,6 +3,11 @@ package com.mygdx.lifeisagame.Screens;
 
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
@@ -34,6 +39,7 @@ public class GameOverScreen implements Screen {
     private FreeTypeFontGenerator fontGenerator;
     private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
     private BitmapFont font;
+    BufferedReader reader;
     private int highscore;
 	private Viewport viewPort;
 	private Stage stage;
@@ -48,11 +54,12 @@ public class GameOverScreen implements Screen {
 	Texture exitButtonInactive;
 	Texture backgroundGameOver;
 	
-	public GameOverScreen(LostViking game)
+	public GameOverScreen(LostViking game, Player player)
 	{
 		viewPort = new FitViewport(LostViking.WIDTH,LostViking.HEIGHT,new OrthographicCamera());
         stage = new Stage(viewPort, ((LostViking) game).batch);
 		this.game=game;
+		this.player=player;
 		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("GameOver/Starjedi.ttf"));
         fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = 50;
@@ -85,9 +92,30 @@ public class GameOverScreen implements Screen {
 		game.batch.draw(backgroundGameOver,0,0,720,1280);
 		game.batch.draw(scoreText,a,SCORETEXT_Y,BUTTON_WIDTH,BUTTON_HEIGHT);
 		game.batch.draw(highscoreText,a,HIGHSCORETEXT_Y,BUTTON_WIDTH,BUTTON_HEIGHT);
-		//highscore=this.player.getHighScore();
-		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-50 , 800);
-		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-50 , 630);
+		
+		try
+        {
+        	reader = new BufferedReader(new FileReader("High_Score.txt"));
+        	highscore = Integer.parseInt(reader.readLine());
+        	reader.close();
+        }
+        catch(IOException e) {
+        	e.printStackTrace();
+        }
+		
+		if(player.getScore()>=highscore)
+        {
+        	try(FileWriter fileWriter = new FileWriter("High_Score.txt")){
+			fileWriter.write(Integer.toString(player.getScore()));
+			fileWriter.close();
+			highscore = player.getScore();
+        	} catch (IOException e) {
+        		System.out.println("File Error!");
+        	}
+        }
+		
+		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-55 , 800);
+		font.draw(game.batch, " " + player.getScore(), (LostViking.WIDTH / 2)-55 , 630);
 //		System.out.println("X : "+Gdx.input.getX());
 //		System.out.println("Y : "+Gdx.input.getY());
 		//Retry

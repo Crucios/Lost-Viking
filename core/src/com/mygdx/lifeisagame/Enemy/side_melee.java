@@ -14,6 +14,7 @@ public class side_melee extends EnemyBase{
 	protected float XSpeed;
 	public side_melee(World world, Player player) {
 		super(world, player);
+		score = 10;
 		this.cekRight = rand.nextInt(2);
 		this.randomHeight = rand.nextInt(14) + rand.nextFloat();
 		this.XSpeed = rand.nextInt(5) + rand.nextFloat() + 2f;

@@ -114,7 +114,7 @@ public class GameScreen implements Screen{
 	public void update(float dt) {
 		handleInput(dt);
 		if(player.isHasDestroyed()) {
-			game.setScreen(new GameOverScreen(game));
+			game.setScreen(new GameOverScreen(game,player));
 		}
 		if(!player.isChoosingSkill()) {
 			world.step(1/60f, 6, 2);

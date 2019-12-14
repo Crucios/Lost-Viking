@@ -13,6 +13,7 @@ public class straight_melee extends EnemyBase {
 		super(world,player);
 		// TODO Auto-generated constructor stub	
 		this.type = 0;
+		score = 5;
 		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
 		enemy.flip(false, true);
 		setBounds(32,36,89 / LostViking.PPM *1.5f,89 / LostViking.PPM * 1.5f);
