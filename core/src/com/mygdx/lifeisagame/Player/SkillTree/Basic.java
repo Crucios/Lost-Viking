@@ -2,10 +2,13 @@ package com.mygdx.lifeisagame.Player.SkillTree;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
 
@@ -15,10 +18,12 @@ public class Basic extends Node{
 	private Body b2bodyPlayer;
 	private ArrayList<BaseBullet> bullet;
 	private World world;
+	private Sound sound;
 	
 	public Basic(int size, Player player, World world) {
 		super(size, player, world);
 		unlocked = true;
+		sound = Gdx.audio.newSound(Gdx.files.internal("Player/shot.mp3"));
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;
@@ -38,6 +43,7 @@ public class Basic extends Node{
 				}
 			}
 			if(bulletTimer > player.getBulletSpeed()) {
+				sound.play(0.3f);
 			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0, true,player));
 			bulletTimer = 0;
 			}		
