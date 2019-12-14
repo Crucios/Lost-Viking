@@ -86,7 +86,7 @@ public class GameOverScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0,0,0,0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		int a=(LostViking.WIDTH-BUTTON_WIDTH)/2;
+		int a = (LostViking.WIDTH-BUTTON_WIDTH)/2;
 		stage.draw();
 		game.batch.begin();
 		game.batch.draw(backgroundGameOver,0,0,720,1280);
