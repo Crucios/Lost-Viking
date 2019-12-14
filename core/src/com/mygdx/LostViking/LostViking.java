@@ -26,6 +26,7 @@ public class LostViking extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
+		manager.load("Combat Music.mp3",Music.class);
 		manager.load("MainMenu/backsound.mp3",Music.class);
 		manager.finishLoading();
 		

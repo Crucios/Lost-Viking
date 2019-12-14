@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -39,6 +40,8 @@ public class Player extends Sprite{
 	private boolean justChooseSkill;
 	private Node skill;
 	private boolean setToDestroy;
+	private Sound sound;
+	private Sound skillsound;
 
 	private int currentScore;
 	private int highscore;
@@ -109,7 +112,8 @@ public class Player extends Sprite{
 		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Alternative Player")));
 		this.world = world;
 		this.position = position;
-		
+		sound=Gdx.audio.newSound(Gdx.files.internal("Player/Explosion.mp3"));
+		skillsound=Gdx.audio.newSound(Gdx.files.internal("Player/Skill Unlock.mp3"));
 		//Initialization
 		camGlitched = false;
 		shooting = false;
@@ -152,8 +156,8 @@ public class Player extends Sprite{
 		//Properties
 		hitpoints = 5;
 		damage = 5;
-		dodgeRate = 0;
-		criticalRate = 0;
+		dodgeRate = 20;
+		criticalRate = 10;
 		score = 0;
 		highscore=0;
 		
@@ -332,6 +336,7 @@ public class Player extends Sprite{
 		{
 			elapsedDestroyed = 0;
 		    setToDestroy = true;
+		    sound.play(0.3f);
 		    b2body.setLinearVelocity(new Vector2(0, 0));
 		}
 		
@@ -344,17 +349,20 @@ public class Player extends Sprite{
 		    hasDestroyed = true;
 		}
 		
-		if(score > 300 && !checkScore.get(0)) {
+		if(score >= 300 && !checkScore.get(0)) {
 			chooseSkill = true;
 			checkScore.set(0, true);
+			skillsound.play(0.5f);
 		}
-		else if(score > 500 && !checkScore.get(1)) {
+		else if(score >= 500 && !checkScore.get(1)) {
 			chooseSkill = true;
 			checkScore.set(1, true);
+			skillsound.play(0.5f);
 		}
-		else if(score > 700 && !checkScore.get(2)) {
+		else if(score >= 700 && !checkScore.get(2)) {
 			chooseSkill = true;
 			checkScore.set(2, true);
+			skillsound.play(0.5f);
 		}
 	}
 	

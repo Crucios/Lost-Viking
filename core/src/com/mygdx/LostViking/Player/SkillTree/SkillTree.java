@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.LostViking.Player.Player;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseDamage.IncreasedDamageEnhanced;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseDamage.Rocket2s;
+import com.mygdx.LostViking.Player.SkillTree.IncreaseDamage.IncreaseDamageEnhance.CriticalShoot;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseDamage.IncreaseDamageEnhance.MultiShoot;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseDamage.Rocket2sec.DoubleRocket3s;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseDamage.Rocket2sec.RocketEvery1s;
@@ -69,6 +70,9 @@ public class SkillTree{
 		add(newNode, positionTree);
 		newNode = new MultiShoot(1,this.player, this.world);
 		positionTree = new int[] {1,0,0};
+		add(newNode, positionTree);
+		newNode = new CriticalShoot(1,this.player, this.world);
+		positionTree = new int[] {1,0,1};
 		add(newNode, positionTree);
 		newNode = new RocketEvery1s(1,this.player, this.world);
 		positionTree = new int[] {1,1,1};

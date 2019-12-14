@@ -1,5 +1,7 @@
 package com.mygdx.LostVikingEnemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,9 +14,11 @@ public class side_melee extends EnemyBase{
 	protected int cekRight;
 	protected float randomHeight;
 	protected float XSpeed;
+	private Sound sound;
 	public side_melee(World world, Player player) {
 		super(world, player);
 		score = 10;
+		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
 		this.cekRight = rand.nextInt(2);
 		this.randomHeight = rand.nextInt(14) + rand.nextFloat();
 		this.XSpeed = rand.nextInt(5) + rand.nextFloat() + 2f;
@@ -49,6 +53,7 @@ public class side_melee extends EnemyBase{
         	player.setScore(player.getScore() + score);
         	isHit = true;
         	hasScore = false;
+        	sound.play(0.3f);
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);

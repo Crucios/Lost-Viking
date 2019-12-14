@@ -89,7 +89,8 @@ public class BaseBullet extends Sprite {
 			b2body.setLinearVelocity(0, speed);
 		}
 		if(hasDamaged) {			
-			if(rand.nextInt(100)< criticalRate) {
+			if(rand.nextInt(100) < criticalRate) {
+				System.out.println("Critical");
 				enemy.setHP(enemy.getHP() - damage * 2);
 			}
 			else {
