@@ -119,8 +119,12 @@ public abstract class EnemyBase extends Sprite {
 	public ArrayList<BaseProjectiles> getEnemyBullet(){
 		return enemyBullet;
 	}
-	public void setHit(boolean hit) {
-		this.isHit = hit;
+	public void onHit(Player player) {
+		isHit = true;
+		if(!player.getInvicible()) {
+    		player.setHitpoints(player.getHitpoints() - 1);
+    		player.setDamaged(true);
+    	}
 	}
 	public void setPosition(Vector2 positions) {
 		this.position = positions;

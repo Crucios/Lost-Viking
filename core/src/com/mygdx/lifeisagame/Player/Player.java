@@ -32,6 +32,7 @@ public class Player extends Sprite{
 	private SkillTree skillTree;
 	private int dodgeRate;
 	private int criticalRate;
+	private boolean piercing;
 	private boolean chooseSkill;
 	private boolean choosingSkill;
 	private boolean justChooseSkill;
@@ -68,6 +69,7 @@ public class Player extends Sprite{
 	private float bulletTimer;
 	private Vector2 bulletPosition;
 	private float bulletSpeed;
+	
 	//Rocket
 	private float rocketTimer;
 	
@@ -109,6 +111,7 @@ public class Player extends Sprite{
 		damaged = false;
 		invicible = false;
 		
+		
 		toRight = false;
 		toLeft = false;
 		boosting = false;
@@ -119,7 +122,7 @@ public class Player extends Sprite{
 		limitMovementSpeed = 2;
 		movementSpeed = 0.5f;
 		criticalRate = 10;
-		bulletSpeed = 6f;
+		bulletSpeed = 0.5f;
 		movingVelocity = new Vector2(0,0);
 		
 		chooseSkill = false;
@@ -129,7 +132,8 @@ public class Player extends Sprite{
 		elapsedInvicible = 0;
 		
 		//bullet
-		bulletTimer = 2;
+		piercing = false;
+		bulletTimer = 0.5f;
 		bullet = new ArrayList<BaseBullet>();
 		rocketTimer = 5;
 		
@@ -305,10 +309,6 @@ public class Player extends Sprite{
 			damaged = false;
 		}
 		
-		/*if(rocketTimer > 1f) {
-			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0,false));
-			rocketTimer = 0;
-		}*/
 		//Set Texture Region
 		setRegion(getFrame(dt));
 		
@@ -452,7 +452,10 @@ public class Player extends Sprite{
 			}
 			
 		}
-
+		System.out.println(Gdx.input.getX()/LostViking.PPM + " " + -Gdx.input.getY()/LostViking.PPM);
+		if(Gdx.input.getX()/LostViking.PPM*1.9f - 2f> 0.5f && Gdx.input.getX()/LostViking.PPM*1.9f - 2f < 9.5f && -Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f > 0.5 &&-Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f < 16.5) {
+			b2body.setTransform(new Vector2(Gdx.input.getX()/LostViking.PPM*1.9f - 2f,-Gdx.input.getY()/LostViking.PPM*1.9f + 18.5f),0);
+		}
 //		Gdx.app.log("Player Position", b2body.getPosition().x + " " + b2body.getPosition().y);
 //		Gdx.app.log("Moving Velocity", movingVelocity.x + " " + movingVelocity.y);
 	}
@@ -486,6 +489,14 @@ public class Player extends Sprite{
 		this.nowPosition = nowPosition;
 	}
 
+	public boolean getInvicible() {
+		return invicible;
+	}
+	
+	public void setInvicible(boolean invicible) {
+		this.invicible = invicible;
+	}
+	
 	public float getElapsed() {
 		return elapsedInvicible;
 	}
@@ -493,6 +504,15 @@ public class Player extends Sprite{
 	public void setElapsed(float elapsed) {
 		this.elapsedInvicible = elapsed;
 	}
+	
+	public void setDamaged(boolean damaged) {
+		this.damaged = damaged;
+	}
+	
+	public boolean getDamaged() {
+		return damaged;
+	}
+	
 	public ArrayList<BaseBullet> getBullet(){
 		return bullet;
 	}
@@ -619,6 +639,11 @@ public class Player extends Sprite{
 	
 	public float getBulletSpeed() {
 		return bulletSpeed;
-
+	}
+	public boolean getPiercing() {
+		return piercing;
+	}
+	public void setPiercing(boolean isPiercing) {
+		piercing = isPiercing;
 	}
 }

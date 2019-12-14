@@ -16,6 +16,7 @@ import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Doublebullet.Tri
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Doublebullet.TripleBulletExpanded;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Quadshoot4s.OctoShoot3s;
 import com.mygdx.lifeisagame.Player.SkillTree.IncreaseHitpoints.Quadshoot4s.SexShoot2s;
+import com.mygdx.lifeisagame.Player.SkillTree.IncreaseSpeed.PiercingShoot;
 
 public class SkillTree{
 	protected World world;
@@ -71,6 +72,18 @@ public class SkillTree{
 		newNode = new DoubleRocket3s(1,this.player, this.world);
 		positionTree = new int[] {1,1,0};
 		add(newNode, positionTree);
+		newNode = new IncreasedSpeed(2,this.player,this.world);
+		positionTree = new int[] {2};
+		add(newNode,positionTree);
+		newNode = new PiercingShoot(2,this.player,this.world);
+		positionTree = new int[] {2,0};
+		add(newNode,positionTree);
+		newNode = new IncreasedSpeed(1,this.player,this.world);
+		positionTree = new int[] {2,0,0};
+		add(newNode, positionTree);
+		newNode=new IncreasedHitpoint(1,this.player,this.world);
+		positionTree=new int[] {2,0,1};
+		add(newNode,positionTree);
 		//Declare Tree in here
 		
 	}

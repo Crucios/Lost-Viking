@@ -39,7 +39,7 @@ public class side_melee extends EnemyBase{
 		else {
 			b2body.setLinearVelocity(-XSpeed,speed);
 		}
-		if((position.y < 1 || position.x > 9.5f) && stop) {
+		if((position.y < -0.5f || position.x > 10.5f || position.x < 0) && stop) {
 			isHit = true;	
 		}
 		if(hitPoint <= 0) {

@@ -10,10 +10,14 @@ public class CriticalShoot extends Node{
 	public CriticalShoot(int size, Player player, World world) {
 		super(size, player, world);
 		textureRegion = new TextureRegion(texture, 272, 192, 135, 188);
+		updated = false;
 	}
 
 	@Override
 	public void update(float dt) {
-		
+		if(unlocked && !updated) {
+			player.setCriticalRate(player.getCriticalRate() + 30);
+			updated = true;
+		}
 	}
 }

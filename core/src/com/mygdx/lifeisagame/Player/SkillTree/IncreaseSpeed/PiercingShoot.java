@@ -14,6 +14,6 @@ public class PiercingShoot extends Node{
 
 	@Override
 	public void update(float dt) {
-		
+		player.setPiercing(true);
 	}
 }

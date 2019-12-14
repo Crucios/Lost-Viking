@@ -22,7 +22,7 @@ public class straight_melee extends EnemyBase {
 	public void update(float dt) {
 		setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
 		b2body.setLinearVelocity(0,speed);
-		if((position.y < 1 || position.x > 10) && stop) {
+		if((position.y < -0.5f || position.x > 10) && stop) {
 			isHit = true;	
 		}
 		if(hitPoint <= 0) {

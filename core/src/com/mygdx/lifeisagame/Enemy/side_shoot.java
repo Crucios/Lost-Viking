@@ -23,7 +23,7 @@ public class side_shoot extends EnemyBase {
 	public void update(float dt) {
 		setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
 		b2body.setLinearVelocity(0,speed);
-		if(position.y < 1 && stop) {
+		if(position.y < -0.5f && stop) {
 			isHit = true;	
 		}
 		if(hitPoint <= 0) {

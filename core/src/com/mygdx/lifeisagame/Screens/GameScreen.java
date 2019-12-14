@@ -25,6 +25,7 @@ import com.mygdx.lifeisagame.Enemy.side_melee;
 import com.mygdx.lifeisagame.Enemy.side_shoot;
 import com.mygdx.lifeisagame.Enemy.straight_melee;
 import com.mygdx.lifeisagame.Enemy.straight_shoot;
+import com.mygdx.lifeisagame.Enemy.Projectiles.BaseProjectiles;
 import com.mygdx.lifeisagame.Player.HUD;
 import com.mygdx.lifeisagame.Player.Player;
 import com.mygdx.lifeisagame.Player.Bullet.BaseBullet;
@@ -61,6 +62,7 @@ public class GameScreen implements Screen{
 	protected float enemyTimer;
 	protected float enemyBoxY;
 	protected float enemyBoxX;
+	protected ArrayList<BaseProjectiles> enemyBullet;
 	protected Random rand;
 	protected ArrayList<BaseBullet> bullet;
 	
@@ -111,13 +113,29 @@ public class GameScreen implements Screen{
 	
 	public void update(float dt) {
 		handleInput(dt);
-		
+		world.step(1/60f, 6, 2);
+		player.update(dt);
+		gamecam.update();
+		renderer.setView(gamecam);
 		if(!player.isChoosingSkill()) {
 			world.step(1/60f, 6, 2);
 			player.update(dt);
 			gamecam.update();
 			renderer.setView(gamecam);
 			
+			for(int i=0; i<mapAnimation.size(); i++) {
+				if(mapAnimation.get(i).isDisposed()) {
+					boolean rotate = false;
+					if(!mapAnimation.get(i).isRotate())
+						rotate = true;
+					
+					mapAnimation.remove(i);
+					mapAnimation.add(new Map(new Vector2(0, 1712), rotate));
+				}
+				else
+					mapAnimation.get(i).update(dt);
+			}
+		
 			for(int i=0; i<mapAnimation.size(); i++) {
 				if(mapAnimation.get(i).isDisposed()) {
 					boolean rotate = false;
@@ -137,7 +155,18 @@ public class GameScreen implements Screen{
 					ene.update(dt);
 				}
 			}
-			if(enemyTimer > 2f) {
+			for(EnemyBase ene : enemy) {
+				if(!ene.getDestroy()) {
+					ene.update(dt);
+				}
+				enemyBullet = ene.getEnemyBullet();
+				for(BaseProjectiles eBullet : enemyBullet) {
+					if(!eBullet.getDestroy()) {
+						eBullet.update(dt);
+					}
+				}
+			}
+			if(enemyTimer > 3f) {
 				int enemyRandom = rand.nextInt(6);
 				if(enemyRandom == 1) {
 					enemy.add(new straight_melee(world,player));
@@ -163,50 +192,73 @@ public class GameScreen implements Screen{
 			for(int i = 0;i<enemy.size();i++) {
 				if(!enemy.get(i).getDestroy()) {
 					enemy.get(i).update(dt);
+					switch(enemy.get(i).getType()) {
+					case 0:
+						enemyBoxX = 0.46f;
+						enemyBoxY = 0.52f;
+						break;
+					case 1:
+						enemyBoxX = 0.36f;
+						enemyBoxY = 0.52f;
+						break;
+					case 2:
+						enemyBoxX = 0.70f;
+						enemyBoxY = 0.52f;
+						break;
+					case 3:
+						enemyBoxX = 0.36f;
+						enemyBoxY = 0.48f;
+						break;
+					case 4:
+						enemyBoxX = 0.36f;
+						enemyBoxY = 0.52f;
+						break;
+					}
+					if((enemy.get(i).getPosition().y + enemyBoxY < player.getNowPosition().y + 0.7f
+							|| enemy.get(i).getPosition().y - enemyBoxY < player.getNowPosition().y + 0.7f)
+							&& (enemy.get(i).getPosition().y + enemyBoxY > player.getNowPosition().y - 0.7f
+							|| enemy.get(i).getPosition().y - enemyBoxY > player.getNowPosition().y - 0.7f)
+							&& (enemy.get(i).getPosition().x  + enemyBoxX < player.getNowPosition().x + 0.4f
+							|| enemy.get(i).getPosition().x  - enemyBoxX < player.getNowPosition().x + 0.4f)
+							&& (enemy.get(i).getPosition().x + enemyBoxX > player.getNowPosition().x - 0.4f
+							|| enemy.get(i).getPosition().x - enemyBoxX > player.getNowPosition().x - 0.4f)) {
+						enemy.get(i).onHit(player);
+						
+					}
 					//Collision Detection
-					for(int j=0;j<bullet.size();j++) {
-						switch(enemy.get(i).getType()) {
-						case 0:
-							enemyBoxX = 0.46f;
-							enemyBoxY = 0.52f;
-							break;
-						case 1:
-							enemyBoxX = 0.36f;
-							enemyBoxY = 0.52f;
-							break;
-						case 2:
-							enemyBoxX = 0.70f;
-							enemyBoxY = 0.52f;
-							break;
-						case 3:
-							enemyBoxX = 0.36f;
-							enemyBoxY = 0.48f;
-							break;
-						case 4:
-							enemyBoxX = 0.36f;
-							enemyBoxY = 0.52f;
-							break;
-						}
+					for(int j=0;j<bullet.size();j++) {		
 						if(!bullet.get(j).getDestroy()) {
 							if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + enemyBoxY
 									&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
 									&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
 									&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
 								bullet.get(j).onHit(enemy.get(i));
-								System.out.println("hiting");
-								System.out.println("Enemy Position : " + enemy.get(i).getPosition());
-								System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
 							}
-							System.out.println("Enemy Position : " + enemy.get(i).getPosition());
-							System.out.println("Bullet Position: " + bullet.get(j).getNowPosition());
 						}
 					}
 				}
 			}
+			for(int i = 0;i<enemy.size();i++) {
+				if(!enemy.get(i).getDestroy()) {			
+					enemyBullet = enemy.get(i).getEnemyBullet();
+					//Collision Detection
+					for(int j = 0;j<enemyBullet.size();j++) {
+	//					System.out.println("Enemy Bullet : " + enemyBullet.get(j).getPosition());
+	//					System.out.println("Player position: " + player.getNowPosition());
+						if(enemyBullet.get(j).getPosition().y < player.getNowPosition().y + 0.7f
+								&& enemyBullet.get(j).getPosition().y > player.getNowPosition().y - 0.7f
+								&& enemyBullet.get(j).getPosition().x < player.getNowPosition().x + 0.4f
+								&& enemyBullet.get(j).getPosition().x > player.getNowPosition().x - 0.4f) {
+							enemyBullet.get(j).onHit(player);
+							
+						}
+					}
+					
+				}
+			}
+			//Update
+			hud.update(dt);
 		}
-		
-		//Update
-		hud.update(dt);
 	}
 	
 	public void handleInput(float dt) {
@@ -236,7 +288,18 @@ public class GameScreen implements Screen{
 			if(!ene.getDestroy()) {
 				ene.draw(game.batch);
 			}
-		}	
+			enemyBullet = ene.getEnemyBullet();
+			for(BaseProjectiles eBullet : enemyBullet) {
+				if(!eBullet.getDestroy()) {
+					eBullet.draw(game.batch);
+				}
+			}
+		}
+		for(BaseBullet bul : player.getBullet()) {
+			if(!bul.getDestroy()) {
+				bul.draw(game.batch);
+			}
+		}
 		player.draw(game.batch);
 		game.batch.end();
 		

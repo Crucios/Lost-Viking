@@ -37,7 +37,7 @@ public class Basic extends Node{
 					bul.update(dt);
 				}
 			}
-			if(bulletTimer > 0.5f) {
+			if(bulletTimer > player.getBulletSpeed()) {
 			bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0, true,player));
 			bulletTimer = 0;
 			}		

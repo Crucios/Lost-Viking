@@ -24,6 +24,7 @@ public class BaseBullet extends Sprite {
 	public Body b2body;
 	public Player player;
 	private TextureRegion bullet;
+	private TextureRegion explode;
 	private Vector2 position;
 	private Vector2 nowPosition;
 	private float speed;
@@ -40,13 +41,18 @@ public class BaseBullet extends Sprite {
 	private Random rand;
 	
 	public BaseBullet(World world, Vector2 position,float angle,boolean isBullet,Player player) {
-		super(new AtlasRegion(new TextureAtlas("Item/bullet.pack").findRegion("bullet")));
+		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Alternative Player")));
 		this.world = world;		
 		this.destroy = false;
 		this.player = player;
 		this.damage = player.getDamage();
 		this.criticalRate = player.getCriticalRate();
-		this.speed = player.getBulletSpeed();
+		if(isBullet) {
+			this.speed = 9f;
+		}
+		else {
+			this.speed = 6f;
+		}
 		this.isBullet = isBullet;
 		hasDamaged = false;
 		stop = true;
@@ -54,21 +60,33 @@ public class BaseBullet extends Sprite {
 		this.angle = angle;
 		this.position = position;
 		rand = new Random();
-		bullet = new TextureRegion(getTexture(), 0,0,12,4);
-		setBounds(0,0,12 / LostViking.PPM,4 / LostViking.PPM);
+		explode = new TextureRegion(getTexture(), 468,282,6,15);
+		if(isBullet) {
+			bullet = new TextureRegion(getTexture(), 468,282,6,15);
+			setBounds(468,282,6 / LostViking.PPM * 2,15 / LostViking.PPM*2);
+		}
+		else {
+			bullet = new TextureRegion(getTexture(),389,133,6,15);
+			setBounds(389,133,6 / LostViking.PPM * 4,15 / LostViking.PPM*3);
+		}
+		
 		definePistolBullet();
 	}
 	public void update(float dt) {
 		this.damage = player.getDamage();
 		this.criticalRate = player.getCriticalRate();
-		this.speed = player.getBulletSpeed();
-		setPosition(position.x - getWidth()/8,position.y - getHeight()/2);
+		if(isBullet) {
+			setPosition(position.x - getWidth()/2,position.y - getHeight()/2);
+		}
+		else {
+			setPosition(position.x - getWidth()/2,position.y - getHeight()/2);
+		}
 		if(angle > 0)
 			b2body.setLinearVelocity(angle / -15f, speed);
 		else if(angle < 0)
 			b2body.setLinearVelocity(angle / -15f, speed);
 		else{
-			b2body.setLinearVelocity(0, 6f);
+			b2body.setLinearVelocity(0, speed);
 		}
 		if(hasDamaged) {			
 			if(rand.nextInt(100)< criticalRate) {
@@ -90,6 +108,7 @@ public class BaseBullet extends Sprite {
 			isHit = false;
 			stop = false;
 		}
+		setRegion(bullet);
 	}
 	public void defineHitBox(int x, int y) {
 		FixtureDef fdef = new FixtureDef();
@@ -105,7 +124,7 @@ public class BaseBullet extends Sprite {
 	
 	public void definePistolBullet() {
 		BodyDef bdef = new BodyDef();
-		bdef.position.set(position.x,position.y);
+		bdef.position.set(position.x,position.y + 0.6f);
 		if(angle != 0) {
 			bdef.angle = (float) (angle*Math.PI/180);
 		}
@@ -122,7 +141,9 @@ public class BaseBullet extends Sprite {
 	}
 	
 	public void onHit(EnemyBase enemy) {
-		isHit = true;
+		if(!player.getPiercing()) {
+			isHit = true;
+		}
 		this.enemy = enemy;
 		hasDamaged = true;
 	}

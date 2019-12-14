@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.LostViking.LostViking;
 import com.mygdx.lifeisagame.Enemy.EnemyBase;
+import com.mygdx.lifeisagame.Player.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -32,7 +33,7 @@ public class BaseProjectiles extends Sprite {
 	private boolean hasDamaged;
 	
 	public BaseProjectiles(World world, Vector2 position,float angle) {
-		super(new AtlasRegion(new TextureAtlas("Item/bullet.pack").findRegion("bullet")));
+		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Alternative Player")));
 		this.world = world;		
 		this.destroy = false;
 		this.damage = 2;
@@ -42,26 +43,26 @@ public class BaseProjectiles extends Sprite {
 		isHit = false;
 		this.angle = angle;
 		this.position = position;
-		bullet = new TextureRegion(getTexture(), 0,0,12,4);
-		setBounds(0,0,12 / LostViking.PPM,4 / LostViking.PPM);
+		bullet = new TextureRegion(getTexture(), 533,284,12,12);
+		setBounds(533,284,12 / LostViking.PPM*3,12 / LostViking.PPM*3);
 		definePistolBullet();
 	}
 	public void update(float dt) {
 		setPosition(position.x - getWidth()/8,position.y - getHeight()/2);
 		if(angle > 0)
-			b2body.setLinearVelocity(angle / -7.5f, -6f);
+			b2body.setLinearVelocity(angle / -7.5f, -3f);
 		else if(angle < 0)
-			b2body.setLinearVelocity(angle / -7.5f, -6f);
+			b2body.setLinearVelocity(angle / -7.5f, -3f);
 		else{
 			b2body.setLinearVelocity(0, -6f);
 		}
 		if(hasDamaged) {
 			hasDamaged = false;
 		}
-		if(position.y < 1 && stop) {
+		if(position.y < -0.5f && stop) {
 			isHit = true;	
 		}
-		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
+		setPosition(new Vector2(b2body.getPosition().x - 0.08f, b2body.getPosition().y - 0.04f));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
 		if(isHit) {
 			world.destroyBody(b2body);
@@ -69,6 +70,7 @@ public class BaseProjectiles extends Sprite {
 			isHit = false;
 			stop = false;
 		}
+		setRegion(bullet);
 	}
 	public void defineHitBox(int x, int y) {
 		FixtureDef fdef = new FixtureDef();
@@ -90,15 +92,18 @@ public class BaseProjectiles extends Sprite {
 		}
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		b2body = world.createBody(bdef);
-		defineHitBox(3,9);
+		defineHitBox(5,5);
 	}
 	public boolean getDestroy() {
 		return destroy;
 	}
 	
-	public void onHit(EnemyBase enemy) {
+	public void onHit(Player player) {
 		isHit = true;
-		hasDamaged = true;
+		if(!player.getInvicible()) {
+    		player.setHitpoints(player.getHitpoints() - 1);
+    		player.setDamaged(true);
+    	}
 	}
 	
 	public void setHit(boolean hit) {
