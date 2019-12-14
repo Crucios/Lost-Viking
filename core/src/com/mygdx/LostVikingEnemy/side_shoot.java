@@ -1,5 +1,7 @@
 package com.mygdx.LostVikingEnemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,11 +12,13 @@ import com.mygdx.LostVikingEnemy.Projectiles.BaseProjectiles;
 
 public class side_shoot extends EnemyBase {
 
+	private Sound sound;
 	public side_shoot(World world, Player player) {
 		super(world, player);
 		// TODO Auto-generated constructor stub
 		this.type = 4;
 		score = 30;
+		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
 		enemy = new TextureRegion(getTexture(), 36,211,89, 89);
 		enemy.flip(false, true);
 		hitPoint = 8;
@@ -33,6 +37,7 @@ public class side_shoot extends EnemyBase {
         	player.setScore(player.getScore() + score);
         	isHit = true;
         	hasScore = false;
+        	sound.play(0.3f);
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);

@@ -16,6 +16,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -42,6 +43,7 @@ public abstract class EnemyBase extends Sprite {
 	protected boolean hasDamaged;
 	protected boolean hasScore;
 	protected Random rand;
+	private Sound sound;
 	protected ArrayList<BaseProjectiles> enemyBullet;
 	
 	public EnemyBase(World world, Player player) {
@@ -51,6 +53,7 @@ public abstract class EnemyBase extends Sprite {
 		this.damage = 4;
 		this.speed = -1.5f;
 		this.player = player;
+		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
 		hasDamaged = false;
 		hasScore= true;
 		score = 0;
@@ -72,6 +75,7 @@ public abstract class EnemyBase extends Sprite {
 		}
 		if(hitPoint <= 0 && hasScore) {
         	player.setScore(player.getScore() + score);
+        	sound.play(0.3f);
         	isHit = true;
         	hasScore = false;
         }

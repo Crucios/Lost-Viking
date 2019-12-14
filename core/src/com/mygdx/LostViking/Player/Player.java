@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -39,6 +40,7 @@ public class Player extends Sprite{
 	private boolean justChooseSkill;
 	private Node skill;
 	private boolean setToDestroy;
+	private Sound sound;
 
 	private int currentScore;
 	private int highscore;
@@ -110,7 +112,7 @@ public class Player extends Sprite{
 		super(new AtlasRegion(new TextureAtlas("Player/Player.pack").findRegion("Alternative Player")));
 		this.world = world;
 		this.position = position;
-		
+		sound=Gdx.audio.newSound(Gdx.files.internal("Player/Explosion.mp3"));
 		//Initialization
 		camGlitched = false;
 		shooting = false;
@@ -333,6 +335,7 @@ public class Player extends Sprite{
 		{
 			elapsedDestroyed = 0;
 		    setToDestroy = true;
+		    sound.play(0.3f);
 		    b2body.setLinearVelocity(new Vector2(0, 0));
 		}
 		

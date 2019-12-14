@@ -2,6 +2,8 @@ package com.mygdx.LostViking.Player.SkillTree.IncreaseDamage;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -16,8 +18,10 @@ public class Rocket2s extends Node{
 	private Body b2bodyPlayer;
 	private ArrayList<BaseBullet> bullet;
 	private World world;
+	private Sound sound;
 	public Rocket2s(int size, Player player, World world) {
 		super(size, player, world);
+		sound = Gdx.audio.newSound(Gdx.files.internal("Player/Rocket.mp3"));
 		b2bodyPlayer = this.player.getB2body();
 		this.bullet = this.player.getBullet();
 		this.world = world;
@@ -37,6 +41,7 @@ public class Rocket2s extends Node{
 				}
 			}
 			if(bulletTimer > 2f) {
+				sound.play(0.3f);
 				bullet.add(new BaseBullet(world,new Vector2(bulletPosition.x, bulletPosition.y),0,false,player));
 				bulletTimer = 0;
 			}

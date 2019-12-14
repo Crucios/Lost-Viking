@@ -113,9 +113,8 @@ public class GameOverScreen implements Screen {
         		System.out.println("File Error!");
         	}
         }
-		
-		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-60 , 800);
-		font.draw(game.batch, " " + player.getScore(), (LostViking.WIDTH / 2)-55 , 630);
+		font.draw(game.batch, "" + highscore, (LostViking.WIDTH / 2)-75, 800);
+		font.draw(game.batch, "" + player.getScore(), (LostViking.WIDTH / 2)-60, 630);
 
 //		System.out.println("X : "+Gdx.input.getX());
 //		System.out.println("Y : "+Gdx.input.getY());
