@@ -66,7 +66,6 @@ public class Player extends Sprite{
 	private boolean boosting;
 	private boolean reversing;
 	private ArrayList<Boolean> checkScore;
-	private int level;
 	
 	//bullet
 	private ArrayList<BaseBullet> bullet;
@@ -116,7 +115,7 @@ public class Player extends Sprite{
 		shooting = false;
 		damaged = false;
 		invicible = false;
-		level = 0;
+		
 		checkScore = new ArrayList<>();
 		checkScore.add(false);
 		checkScore.add(false);
@@ -447,9 +446,9 @@ public class Player extends Sprite{
 				}
 			}
 			
-//			if(Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-//				chooseSkill = true;
-//			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+				chooseSkill = true;
+			}
 			
 			if(choosingSkill) {
 				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {

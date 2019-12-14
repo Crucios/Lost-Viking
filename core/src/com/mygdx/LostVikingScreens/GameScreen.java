@@ -316,7 +316,7 @@ public class GameScreen implements Screen{
 		
 		hud.stage.draw();
 		
-		b2dr.render(world, gamecam.combined);
+		//b2dr.render(world, gamecam.combined);
 	}
 
 	@Override
