@@ -157,8 +157,8 @@ public class Player extends Sprite{
 		//Properties
 		hitpoints = 5;
 		damage = 5;
-		dodgeRate = 0;
-		criticalRate = 0;
+		dodgeRate = 20;
+		criticalRate = 10;
 		score = 0;
 		highscore=0;
 		

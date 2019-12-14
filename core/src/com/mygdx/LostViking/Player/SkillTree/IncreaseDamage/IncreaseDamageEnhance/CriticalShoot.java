@@ -16,7 +16,7 @@ public class CriticalShoot extends Node{
 	@Override
 	public void update(float dt) {
 		if(unlocked && !updated) {
-			player.setCriticalRate(player.getCriticalRate() + 30);
+			player.setCriticalRate(player.getCriticalRate() + 60);
 			updated = true;
 		}
 	}

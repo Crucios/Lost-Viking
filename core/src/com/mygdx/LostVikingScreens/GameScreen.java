@@ -230,7 +230,9 @@ public class GameScreen implements Screen{
 									&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
 									&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
 									&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
-								bullet.get(j).onHit(enemy.get(i));
+								if{
+									bullet.get(j).onHit(enemy.get(i));
+								}
 							}
 						}
 						else
@@ -251,7 +253,9 @@ public class GameScreen implements Screen{
 								&& enemyBullet.get(j).getPosition().y > player.getNowPosition().y - 0.7f
 								&& enemyBullet.get(j).getPosition().x < player.getNowPosition().x + 0.4f
 								&& enemyBullet.get(j).getPosition().x > player.getNowPosition().x - 0.4f) {
-							enemyBullet.get(j).onHit(player);
+							if(rand.nextInt(100) > player.getDodgeRate()) {
+								enemyBullet.get(j).onHit(player);
+							}
 							
 						}
 					}
