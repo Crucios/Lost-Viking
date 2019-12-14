@@ -17,6 +17,8 @@ public class side_shoot extends EnemyBase {
 		score = 30;
 		enemy = new TextureRegion(getTexture(), 36,211,89, 89);
 		enemy.flip(false, true);
+		hitPoint = 8;
+		speed = -2.5f;
 		setBounds(36,211,89 / LostViking.PPM * 1.3f,89 / LostViking.PPM * 1.3f);
 		definePistolBullet();
 	}
@@ -27,8 +29,10 @@ public class side_shoot extends EnemyBase {
 		if(position.y < -0.5f && stop) {
 			isHit = true;	
 		}
-		if(hitPoint <= 0) {
+		if(hitPoint <= 0 && hasScore) {
+        	player.setScore(player.getScore() + score);
         	isHit = true;
+        	hasScore = false;
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
@@ -40,12 +44,11 @@ public class side_shoot extends EnemyBase {
 			}
 		}
 		if(bulletTimer > 1.5f && hitPoint > 2) {
-			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),-60));
-			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),60));
+			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),-15));
+			enemyBullet.add(new BaseProjectiles(world,new Vector2(bulletPosition.x, bulletPosition.y- 0.3f),15));
 			bulletTimer = 0;
 		}
 		if(isHit) {
-			player.setScore(player.getScore() + score);
 			world.destroyBody(b2body);
 			destroy = true;
 			isHit = false;

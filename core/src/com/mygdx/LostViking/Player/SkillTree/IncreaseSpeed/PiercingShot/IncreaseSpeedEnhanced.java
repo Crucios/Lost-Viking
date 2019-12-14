@@ -14,6 +14,9 @@ public class IncreaseSpeedEnhanced extends Node{
 
 	@Override
 	public void update(float dt) {
-		
+		if(unlocked && !updated) {
+			player.setBulletSpeed(player.getBulletSpeed() - 0.15f);
+			updated = true;
+		}
 	}
 }

@@ -16,7 +16,11 @@ import com.mygdx.LostViking.Player.SkillTree.IncreaseHitpoints.Doublebullet.Trip
 import com.mygdx.LostViking.Player.SkillTree.IncreaseHitpoints.Doublebullet.TripleBulletExpanded;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseHitpoints.Quadshoot4s.OctoShoot3s;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseHitpoints.Quadshoot4s.SexShoot2s;
+import com.mygdx.LostViking.Player.SkillTree.IncreaseSpeed.IncreasedMovementSpeed;
 import com.mygdx.LostViking.Player.SkillTree.IncreaseSpeed.PiercingShoot;
+import com.mygdx.LostViking.Player.SkillTree.IncreaseSpeed.IncreaseMovementSpeed.Dodge;
+import com.mygdx.LostViking.Player.SkillTree.IncreaseSpeed.IncreaseMovementSpeed.IncreasedEnhancedSpeed2;
+import com.mygdx.LostViking.Player.SkillTree.IncreaseSpeed.PiercingShot.IncreaseSpeedEnhanced;
 
 public class SkillTree{
 	protected World world;
@@ -78,11 +82,20 @@ public class SkillTree{
 		newNode = new PiercingShoot(2,this.player,this.world);
 		positionTree = new int[] {2,0};
 		add(newNode,positionTree);
-		newNode = new IncreasedSpeed(1,this.player,this.world);
+		newNode = new IncreasedMovementSpeed(2,this.player,this.world);
+		positionTree = new int[] {2,1};
+		add(newNode,positionTree);
+		newNode = new IncreaseSpeedEnhanced(1,this.player,this.world);
 		positionTree = new int[] {2,0,0};
 		add(newNode, positionTree);
 		newNode=new IncreasedHitpoint(1,this.player,this.world);
 		positionTree=new int[] {2,0,1};
+		add(newNode,positionTree);
+		newNode=new IncreasedEnhancedSpeed2(1,this.player,this.world);
+		positionTree=new int[] {2,1,0};
+		add(newNode,positionTree);
+		newNode=new Dodge(1,this.player,this.world);
+		positionTree=new int[] {2,1,1};
 		add(newNode,positionTree);
 		//Declare Tree in here
 		

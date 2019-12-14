@@ -62,6 +62,8 @@ public class GameScreen implements Screen{
 	protected float enemyTimer;
 	protected float enemyBoxY;
 	protected float enemyBoxX;
+	protected float enemyLimit;
+	protected float enemyCounter;
 	protected ArrayList<BaseProjectiles> enemyBullet;
 	protected Random rand;
 	protected ArrayList<BaseBullet> bullet;
@@ -105,6 +107,8 @@ public class GameScreen implements Screen{
 		
 		enemy = new ArrayList<EnemyBase>();
 		enemyTimer = 0;
+		enemyLimit = 5f;
+		enemyCounter = 0;
 		rand = new Random();
 		bullet = player.getBullet();
 		
@@ -137,6 +141,7 @@ public class GameScreen implements Screen{
 		
 			bullet = player.getBullet();
 			enemyTimer += dt;
+			enemyCounter += dt;
 			for(int i=0;i<enemy.size();i++) {
 				enemyBullet = enemy.get(i).getEnemyBullet();
 				if(!enemy.get(i).getDestroy()) {
@@ -151,8 +156,12 @@ public class GameScreen implements Screen{
 					}
 				}
 			}
-			
-			if(enemyTimer > 3f) {
+			if(enemyCounter > 15f && enemyLimit > 1) {
+				System.out.println("ENEMY LIMIT: "+ enemyLimit);
+				enemyLimit -= 0.2f;
+				enemyCounter  = 0;
+			}
+			if(enemyTimer > enemyLimit) {
 				int enemyRandom = rand.nextInt(6);
 				if(enemyRandom == 1) {
 					enemy.add(new straight_melee(world,player));

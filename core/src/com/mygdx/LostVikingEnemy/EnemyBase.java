@@ -40,6 +40,7 @@ public abstract class EnemyBase extends Sprite {
 	protected boolean destroy;
 	protected boolean miss;
 	protected boolean hasDamaged;
+	protected boolean hasScore;
 	protected Random rand;
 	protected ArrayList<BaseProjectiles> enemyBullet;
 	
@@ -51,6 +52,7 @@ public abstract class EnemyBase extends Sprite {
 		this.speed = -1.5f;
 		this.player = player;
 		hasDamaged = false;
+		hasScore= true;
 		score = 0;
 		bulletTimer = 2;
 		stop = true;
@@ -68,8 +70,10 @@ public abstract class EnemyBase extends Sprite {
 		if(position.y < 1 && stop) {
 			isHit = true;	
 		}
-		if(hitPoint <= 0) {
+		if(hitPoint <= 0 && hasScore) {
+        	player.setScore(player.getScore() + score);
         	isHit = true;
+        	hasScore = false;
         }
 		setPosition(new Vector2(b2body.getPosition().x, b2body.getPosition().y));
 		nowPosition = new Vector2(b2body.getPosition().x, b2body.getPosition().y);
@@ -82,7 +86,7 @@ public abstract class EnemyBase extends Sprite {
 		}
 		if(isHit) {
 			world.destroyBody(b2body);
-			
+			hasScore = true;
 			destroy = true;
 			isHit = false;
 			stop = false;

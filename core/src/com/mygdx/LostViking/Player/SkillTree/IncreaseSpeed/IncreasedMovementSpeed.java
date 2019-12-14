@@ -14,6 +14,10 @@ public class IncreasedMovementSpeed extends Node{
 
 	@Override
 	public void update(float dt) {
-		
+		if(unlocked && !updated) {
+			player.setLimitMovementSpeed(player.getLimitMovementSpeed() + 1f);
+			player.setMovementSpeed(player.getMovementSpeed() + 1f);
+			updated = true;
+		}
 	}
 }

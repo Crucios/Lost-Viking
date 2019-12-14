@@ -14,6 +14,9 @@ public class Dodge extends Node{
 	
 	@Override
 	public void update(float dt) {
-		
+		if(unlocked && !updated) {
+			player.setDodgeRate(player.getDodgeRate() + 60);
+			updated = true;
+		}
 	}
 }
