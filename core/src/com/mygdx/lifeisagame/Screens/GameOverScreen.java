@@ -84,7 +84,7 @@ public class GameOverScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1,0,0,1);
+		Gdx.gl.glClearColor(0,0,0,0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		int a=(LostViking.WIDTH-BUTTON_WIDTH)/2;
 		stage.draw();
@@ -114,8 +114,8 @@ public class GameOverScreen implements Screen {
         	}
         }
 		
-		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-55 , 800);
-		font.draw(game.batch, " " + player.getScore(), (LostViking.WIDTH / 2)-55 , 630);
+		font.draw(game.batch, " " + highscore, (LostViking.WIDTH / 2)-65 , 800);
+		font.draw(game.batch, " " + player.getScore(), (LostViking.WIDTH / 2)-60 , 630);
 //		System.out.println("X : "+Gdx.input.getX());
 //		System.out.println("Y : "+Gdx.input.getY());
 		//Retry
