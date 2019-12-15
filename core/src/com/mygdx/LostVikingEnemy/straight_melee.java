@@ -18,7 +18,7 @@ public class straight_melee extends EnemyBase {
 		score = 5;
 		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
 		speed = -3.5f;
-		hitPoint = 15;
+		hitPoint = 12;
 		enemy = new TextureRegion(getTexture(), 32,36,89, 89);
 		enemy.flip(false, true);
 		setBounds(32,36,89 / LostViking.PPM *1.5f,89 / LostViking.PPM * 1.5f);

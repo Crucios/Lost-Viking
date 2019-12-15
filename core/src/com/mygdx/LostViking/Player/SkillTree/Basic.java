@@ -35,7 +35,7 @@ public class Basic extends Node{
 		if(unlocked) {
 			//bullet	
 			bulletTimer += dt;
-			bulletPosition = new Vector2(b2bodyPlayer.getPosition().x, b2bodyPlayer.getPosition().y + 0.2f);
+			bulletPosition = new Vector2(b2bodyPlayer.getPosition().x, b2bodyPlayer.getPosition().y);
 			//System.out.println("bullet Position: "+bulletPosition.x + " " + bulletPosition.y);
 			for(BaseBullet bul : bullet) {
 				if(!bul.getDestroy()) {

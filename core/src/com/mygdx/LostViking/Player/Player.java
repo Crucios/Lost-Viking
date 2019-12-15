@@ -392,6 +392,9 @@ public class Player extends Sprite{
 					toRight = true;
 					toLeft = false;
 				}
+//				if(Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+//					this.hitpoints++;
+//				}
 				moving = true;
 				movingTimer = 0;
 			}
@@ -454,9 +457,9 @@ public class Player extends Sprite{
 				}
 			}
 			
-			if(Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
-				chooseSkill = true;
-			}
+//			if(Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+//				chooseSkill = true;
+//			}
 			
 			if(choosingSkill) {
 				if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {

@@ -23,6 +23,7 @@ import com.mygdx.LostViking.Player.HUD;
 import com.mygdx.LostViking.Player.Player;
 import com.mygdx.LostViking.Player.Bullet.BaseBullet;
 import com.mygdx.LostViking.Tools.WorldCreator;
+import com.mygdx.LostVikingEnemy.BOSS;
 import com.mygdx.LostVikingEnemy.EnemyBase;
 import com.mygdx.LostVikingEnemy.double_shoot;
 import com.mygdx.LostVikingEnemy.side_melee;
@@ -59,11 +60,13 @@ public class GameScreen implements Screen{
 	
 	//enemy
 	protected ArrayList<EnemyBase> enemy;
+	protected BOSS bos;
 	protected float enemyTimer;
 	protected float enemyBoxY;
 	protected float enemyBoxX;
 	protected float enemyLimit;
 	protected float enemyCounter;
+	protected boolean isBoss;
 	protected ArrayList<BaseProjectiles> enemyBullet;
 	protected Random rand;
 	protected ArrayList<BaseBullet> bullet;
@@ -99,7 +102,7 @@ public class GameScreen implements Screen{
 		renderer.setView(gamecam);
 		
 		//Box2D Debug Renderer
-		b2dr = new Box2DDebugRenderer();
+		//b2dr = new Box2DDebugRenderer();
 		
 		//Generate World
 		maxLeft = gamePort.getWorldWidth() / 2;
@@ -112,6 +115,7 @@ public class GameScreen implements Screen{
 		enemyTimer = 0;
 		enemyLimit = 5f;
 		enemyCounter = 0;
+		isBoss = false;
 		rand = new Random();
 		bullet = player.getBullet();
 		
@@ -156,7 +160,7 @@ public class GameScreen implements Screen{
 			
 				for(int j=0;j<enemyBullet.size();j++) {
 					if(!enemyBullet.get(j).getDestroy()) {
-					enemyBullet.get(j).update(dt);
+						enemyBullet.get(j).update(dt);
 					}
 				}
 			}
@@ -165,7 +169,18 @@ public class GameScreen implements Screen{
 				enemyLimit -= 0.2f;
 				enemyCounter  = 0;
 			}
-			if(enemyTimer > enemyLimit) {
+			if(isBoss) {
+				if(bos.getHP() <= 0) {
+					isBoss = false;
+				}
+			}
+			if((player.getScore() % 1000) - 40 < 0 && !isBoss && player.getScore() > 995) {
+				isBoss = true;
+				bos = new BOSS(world,player);
+				enemy.add(bos);
+				enemyTimer = 0;
+			}
+			if(enemyTimer > enemyLimit && !isBoss) {
 				int enemyRandom = rand.nextInt(6);
 				if(enemyRandom == 1) {
 					enemy.add(new straight_melee(world,player));
@@ -213,6 +228,10 @@ public class GameScreen implements Screen{
 						enemyBoxX = 0.36f;
 						enemyBoxY = 0.52f;
 						break;
+					case 5:
+						enemyBoxX = 2f;
+						enemyBoxY = 0.1f;
+						break;
 					}
 					if((enemy.get(i).getPosition().y + enemyBoxY < player.getNowPosition().y + 0.7f
 							|| enemy.get(i).getPosition().y - enemyBoxY < player.getNowPosition().y + 0.7f)
@@ -222,14 +241,15 @@ public class GameScreen implements Screen{
 							|| enemy.get(i).getPosition().x  - enemyBoxX < player.getNowPosition().x + 0.4f)
 							&& (enemy.get(i).getPosition().x + enemyBoxX > player.getNowPosition().x - 0.4f
 							|| enemy.get(i).getPosition().x - enemyBoxX > player.getNowPosition().x - 0.4f)) {
-						enemy.get(i).onHit(player);
+						if(rand.nextInt(100) > player.getDodgeRate()) {
+							enemy.get(i).onHit(player);
+						}
 						
 					}
-					//Collision Detection
 					for(int j=0;j<bullet.size();j++) {		
 						if(!bullet.get(j).getDestroy()) {
-							if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + enemyBoxY
-									&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - enemyBoxY
+							if(bullet.get(j).getPosition().y < enemy.get(i).getPosition().y + 0.1f
+									&& bullet.get(j).getPosition().y > enemy.get(i).getPosition().y - 0.1f
 									&& bullet.get(j).getPosition().x < enemy.get(i).getPosition().x + enemyBoxX
 									&& bullet.get(j).getPosition().x > enemy.get(i).getPosition().x - enemyBoxX) {
 									bullet.get(j).onHit(enemy.get(i));
@@ -255,7 +275,7 @@ public class GameScreen implements Screen{
 							enemyBullet.get(j).onHit(player);
 						}
 							
-						}
+					}
 				}	
 			}
 		}
@@ -319,7 +339,7 @@ public class GameScreen implements Screen{
 		
 		hud.stage.draw();
 		
-		b2dr.render(world, gamecam.combined);
+		//b2dr.render(world, gamecam.combined);
 	}
 
 	@Override

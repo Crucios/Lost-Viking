@@ -27,10 +27,10 @@ public class side_melee extends EnemyBase{
 		speed = -4f;
 		// TODO Auto-generated constructor stub
 		if(cekRight == 1) {
-			this.position = new Vector2(0, randomHeight + 2);
+			this.position = new Vector2(0, randomHeight + 5);
 		}
 		else {
-			this.position = new Vector2(10,randomHeight + 2);
+			this.position = new Vector2(10,randomHeight + 5);
 		}
 		enemy = new TextureRegion(getTexture(), 200,46,70, 70);
 		enemy.flip(false, true);

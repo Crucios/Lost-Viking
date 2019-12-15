@@ -16,7 +16,8 @@ public class straight_shoot extends EnemyBase{
 		super(world, player);
 		// TODO Auto-generated constructor stub
 		this.type = 1;
-		score = 10;
+		score = 15;
+		hitPoint = 12;
 		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
 		speed = -1.5f;
 		enemy = new TextureRegion(getTexture(), 110,130,83, 89);

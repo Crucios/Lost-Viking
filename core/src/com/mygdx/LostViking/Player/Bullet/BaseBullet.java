@@ -59,6 +59,7 @@ public class BaseBullet extends Sprite {
 		isHit = false;
 		this.angle = angle;
 		this.position = position;
+		this.position.y += 0.2f;
 		rand = new Random();
 		explode = new TextureRegion(getTexture(), 468,282,6,15);
 		if(isBullet) {
@@ -66,6 +67,7 @@ public class BaseBullet extends Sprite {
 			setBounds(468,282,6 / LostViking.PPM * 2,15 / LostViking.PPM*2);
 		}
 		else {
+			this.damage *= 2;
 			bullet = new TextureRegion(getTexture(),389,133,6,15);
 			setBounds(389,133,6 / LostViking.PPM * 4,15 / LostViking.PPM*3);
 		}

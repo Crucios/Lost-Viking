@@ -11,17 +11,16 @@ import com.mygdx.LostViking.Player.Player;
 import com.mygdx.LostVikingEnemy.Projectiles.BaseProjectiles;
 
 public class side_shoot extends EnemyBase {
-
 	private Sound sound;
 	public side_shoot(World world, Player player) {
 		super(world, player);
 		// TODO Auto-generated constructor stub
 		this.type = 4;
-		score = 30;
+		score = 20;
 		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
 		enemy = new TextureRegion(getTexture(), 36,211,89, 89);
 		enemy.flip(false, true);
-		hitPoint = 8;
+		hitPoint = 14;
 		speed = -2.5f;
 		setBounds(36,211,89 / LostViking.PPM * 1.3f,89 / LostViking.PPM * 1.3f);
 		definePistolBullet();

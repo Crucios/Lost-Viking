@@ -17,7 +17,7 @@ public class double_shoot extends EnemyBase {
 		super(world,player);
 		// TODO Auto-generated constructor stub
 		sound=Gdx.audio.newSound(Gdx.files.internal("Enemy/enemydead.mp3"));
-		score = 20;
+		score = 25;
 		this.type = 2;
 		enemy = new TextureRegion(getTexture(), 175,500,165, 130);
 		enemy.flip(false, true);
